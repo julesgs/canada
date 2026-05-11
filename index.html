@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f6f5f2">
+<title>Canada — Juillet 2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f5f2;
+    --card: #ffffff;
+    --ink: #1c1b1a;
+    --ink-2: #5b5853;
+    --ink-3: #9b968e;
+    --line: #ebe8e2;
+    --line-soft: #f1eee8;
+
+    --c-montreal: #6b5fc7;  --c-montreal-bg: #efedfc;
+    --c-lac: #4f9579;       --c-lac-bg: #e6f1eb;
+    --c-toronto: #c4823f;   --c-toronto-bg: #faecd8;
+    --c-quebec: #b86247;    --c-quebec-bg: #f8e3da;
+
+    --d-visit: #8a7fd0;
+    --d-eat: #5fa67e;
+    --d-night: #6b5fc7;
+    --d-drive: #a39e95;
+    --d-hotel: #c4923f;
+    --d-nature: #82a653;
+    --d-flight: #c66f6e;
+
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --pager-h: 60px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01", "cv11";
+    letter-spacing: -0.005em;
+  }
+
+  /* ===== SWIPER ===== */
+  .swiper {
+    display: flex;
+    width: 100vw;
+    height: calc(100vh - var(--pager-h) - var(--safe-bottom));
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .swiper::-webkit-scrollbar { display: none; }
+
+  /* ===== DAY CARD ===== */
+  .day {
+    flex: 0 0 100vw;
+    width: 100vw;
+    height: 100%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    display: flex;
+    flex-direction: column;
+    padding: calc(var(--safe-top) + 14px) 14px 0;
+    overflow: hidden;
+  }
+  .card {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(28,27,26,0.03), 0 8px 24px -12px rgba(28,27,26,0.08);
+    max-width: 560px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Card header */
+  .card-head {
+    padding: 22px 22px 18px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .day-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 100px;
+    letter-spacing: -0.005em;
+  }
+  .b-montreal { background: var(--c-montreal-bg); color: var(--c-montreal); }
+  .b-lac      { background: var(--c-lac-bg);      color: var(--c-lac); }
+  .b-toronto  { background: var(--c-toronto-bg);  color: var(--c-toronto); }
+  .b-quebec   { background: var(--c-quebec-bg);   color: var(--c-quebec); }
+  .date-line {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-3);
+    letter-spacing: 0.01em;
+    margin-bottom: 4px;
+  }
+  .title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.022em;
+    line-height: 1.15;
+  }
+
+  /* Card body (scrollable) */
+  .card-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 22px 22px;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  .card-body::-webkit-scrollbar { width: 0; }
+
+  /* Activity */
+  .act {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    align-items: center;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .act:last-child { border-bottom: none; }
+  .time {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-3);
+    min-width: 50px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+    flex-shrink: 0;
+  }
+  .thumb {
+    width: 54px;
+    height: 54px;
+    border-radius: 11px;
+    flex-shrink: 0;
+    background: var(--line-soft);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+  }
+  .thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .thumb::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 3px;
+  }
+  .thumb.d-visit::after  { background: var(--d-visit); }
+  .thumb.d-eat::after    { background: var(--d-eat); }
+  .thumb.d-night::after  { background: var(--d-night); }
+  .thumb.d-drive::after  { background: var(--d-drive); }
+  .thumb.d-hotel::after  { background: var(--d-hotel); }
+  .thumb.d-nature::after { background: var(--d-nature); }
+  .thumb.d-flight::after { background: var(--d-flight); }
+  .thumb.placeholder.d-visit  { background: color-mix(in srgb, var(--d-visit) 14%, var(--line-soft)); }
+  .thumb.placeholder.d-eat    { background: color-mix(in srgb, var(--d-eat) 14%, var(--line-soft)); }
+  .thumb.placeholder.d-night  { background: color-mix(in srgb, var(--d-night) 14%, var(--line-soft)); }
+  .thumb.placeholder.d-drive  { background: color-mix(in srgb, var(--d-drive) 14%, var(--line-soft)); }
+  .thumb.placeholder.d-hotel  { background: color-mix(in srgb, var(--d-hotel) 14%, var(--line-soft)); }
+  .thumb.placeholder.d-nature { background: color-mix(in srgb, var(--d-nature) 14%, var(--line-soft)); }
+  .thumb.placeholder.d-flight { background: color-mix(in srgb, var(--d-flight) 14%, var(--line-soft)); }
+  .act-text { flex: 1; min-width: 0; }
+  .name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .note {
+    font-size: 12.5px;
+    color: var(--ink-2);
+    margin-top: 2px;
+    letter-spacing: -0.005em;
+  }
+
+  /* ===== PAGER ===== */
+  .pager {
+    height: var(--pager-h);
+    padding: 0 16px calc(var(--safe-bottom)) 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    background: var(--bg);
+    flex-shrink: 0;
+  }
+  .pager-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--ink-2);
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .pager-btn:active { transform: scale(0.92); }
+  .pager-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  .pager-btn svg { width: 16px; height: 16px; }
+  .dots {
+    display: flex;
+    gap: 6px;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--line);
+    transition: all 0.25s;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .dot.active {
+    background: var(--ink);
+    width: 22px;
+    border-radius: 100px;
+  }
+
+  /* Desktop: keep cards centered, narrower swiper */
+  @media (min-width: 720px) {
+    :root { --pager-h: 72px; }
+    .day { padding-top: 24px; padding-left: 24px; padding-right: 24px; }
+    .card { max-width: 540px; }
+    .pager-btn { width: 44px; height: 44px; }
+  }
+
+  /* Tiny screens */
+  @media (max-width: 360px) {
+    .card-head { padding: 18px 18px 14px; }
+    .card-body { padding: 4px 18px 18px; }
+    .title { font-size: 19px; }
+    .thumb { width: 48px; height: 48px; font-size: 19px; }
+    .time { min-width: 46px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="swiper" id="swiper">
+
+  <!-- JOUR 1 -->
+  <section class="day" data-day="1">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-meta">
+          <span class="day-num">Jour 01 / 10</span>
+          <span class="badge b-montreal">Montréal</span>
+        </div>
+        <div class="date-line">Dimanche 20 juillet</div>
+        <div class="title">Arrivée à Montréal</div>
+      </div>
+      <div class="card-body">
+        <div class="act"><span class="time">16h35</span><span class="thumb d-flight"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/YUL.U.S._Departures.Sector.Control.Tower.jpg/330px-YUL.U.S._Departures.Sector.Control.Tower.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Atterrissage Montréal (YUL)</div><div class="note">Récupération bagages + voiture de location</div></div></div>
+        <div class="act"><span class="time">~19h00</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-in Ruby Foo's Hotel</div></div></div>
+        <div class="act"><span class="time">~21h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Mont_Real_Hilltop_4_db.jpg/330px-Mont_Real_Hilltop_4_db.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Mont Royal — Belvédère Kondiaronk</div><div class="note">Vue panoramique de nuit</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOUR 2 -->
+  <section class="day" data-day="2">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-meta">
+          <span class="day-num">Jour 02 / 10</span>
+          <span class="badge b-montreal">Montréal</span>
+        </div>
+        <div class="date-line">Lundi 21 juillet</div>
+        <div class="title">Exploration Montréal</div>
+      </div>
+      <div class="card-body">
+        <div class="act"><span class="time">10h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Montreal_Old_port.jpg/330px-Montreal_Old_port.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Vieux-Port de Montréal</div><div class="note">Balade, quais et marché</div></div></div>
+        <div class="act"><span class="time">13h00</span><span class="thumb placeholder d-eat">🍽️</span><div class="act-text"><div class="name">Déjeuner dans le Vieux-Port</div></div></div>
+        <div class="act"><span class="time">15h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Griffintown_delamontagne.jpg/330px-Griffintown_delamontagne.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Griffintown</div><div class="note">Quartier branché, street art</div></div></div>
+        <div class="act"><span class="time">20h00</span><span class="thumb d-night"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Casino_de_Montr%C3%A9al_%28entr%C3%A9e%29.jpg/330px-Casino_de_Montr%C3%A9al_%28entr%C3%A9e%29.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Casino de Montréal</div><div class="note">Optionnel — Île Notre-Dame</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOUR 3 -->
+  <section class="day" data-day="3">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-meta">
+          <span class="day-num">Jour 03 / 10</span>
+          <span class="badge b-lac">Lac Bon Echo</span>
+        </div>
+        <div class="date-line">Mardi 22 juillet</div>
+        <div class="title">Route vers Bon Echo</div>
+      </div>
+      <div class="card-body">
+        <div class="act"><span class="time">09h00</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-out Ruby Foo's</div></div></div>
+        <div class="act"><span class="time">09h30</span><span class="thumb placeholder d-drive">🚗</span><div class="act-text"><div class="name">Trajet Montréal → Parc Bon Echo</div><div class="note">~2h30</div></div></div>
+        <div class="act"><span class="time">12h30</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-in Lakeside Inn</div></div></div>
+        <div class="act"><span class="time">14h00</span><span class="thumb d-nature"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Mazinaw_Rock%2C_Bon_Echo.jpg/330px-Mazinaw_Rock%2C_Bon_Echo.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Rocher Mazinaw</div><div class="note">Falaise + peintures rupestres, traversée en bateau</div></div></div>
+        <div class="act"><span class="time">16h30</span><span class="thumb d-nature"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Upper_Mazinaw_Lake%2C_Mazinaw_Rock.jpg/330px-Upper_Mazinaw_Lake%2C_Mazinaw_Rock.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Cliff Top Experience</div><div class="note">Randonnée jusqu'au sommet</div></div></div>
+        <div class="act"><span class="time">20h00</span><span class="thumb placeholder d-eat">🔥</span><div class="act-text"><div class="name">Dîner au bord du lac</div><div class="note">Feu de camp</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOUR 4 -->
+  <section class="day" data-day="4">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-meta">
+          <span class="day-num">Jour 04 / 10</span>
+          <span class="badge b-toronto">Toronto</span>
+        </div>
+        <div class="date-line">Mercredi 23 juillet</div>
+        <div class="title">Route vers Toronto</div>
+      </div>
+      <div class="card-body">
+        <div class="act"><span class="time">09h00</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-out Lakeside Inn</div></div></div>
+        <div class="act"><span class="time">09h30</span><span class="thumb placeholder d-drive">🚗</span><div class="act-text"><div class="name">Trajet Bon Echo → Toronto</div><div class="note">~3h30</div></div></div>
+        <div class="act"><span class="time">13h30</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-in Town Inn Suites</div></div></div>
+        <div class="act"><span class="time">15h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Scarborough_Bluffs%2C_May_4_2026_%2807%29.jpg/330px-Scarborough_Bluffs%2C_May_4_2026_%2807%29.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Scarborough Bluffs</div><div class="note">Falaises au bord du lac Ontario</div></div></div>
+        <div class="act"><span class="time">20h00</span><span class="thumb placeholder d-eat">🍔</span><div class="act-text"><div class="name">The Burger's Priest</div></div></div>
+        <div class="act"><span class="time">22h00</span><span class="thumb d-night"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Yonge-Dundas_square.jpg/330px-Yonge-Dundas_square.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Yonge-Dundas Square de nuit</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOUR 5 -->
+  <section class="day" data-day="5">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-meta">
+          <span class="day-num">Jour 05 / 10</span>
+          <span class="badge b-toronto">Toronto</span>
+        </div>
+        <div class="date-line">Jeudi 24 juillet</div>
+        <div class="title">Chutes du Niagara</div>
+      </div>
+      <div class="card-body">
+        <div class="act"><span class="time">08h30</span><span class="thumb placeholder d-drive">🚗</span><div class="act-text"><div class="name">Départ pour Niagara Falls</div><div class="note">~1h30</div></div></div>
+        <div class="act"><span class="time">10h00</span><span class="thumb d-nature"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/3Falls_Niagara.jpg/330px-3Falls_Niagara.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Chutes du Niagara — journée</div><div class="note">Maid of the Mist, Voyage au bout des chutes, Skylon Tower</div></div></div>
+        <div class="act"><span class="time">18h00</span><span class="thumb placeholder d-drive">🚗</span><div class="act-text"><div class="name">Retour Toronto</div></div></div>
+        <div class="act"><span class="time">20h00</span><span class="thumb placeholder d-eat">🍔</span><div class="act-text"><div class="name">Happy Burger</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOUR 6 -->
+  <section class="day" data-day="6">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-meta">
+          <span class="day-num">Jour 06 / 10</span>
+          <span class="badge b-toronto">Toronto</span>
+        </div>
+        <div class="date-line">Vendredi 25 juillet</div>
+        <div class="title">Shopping + CN Tower</div>
+      </div>
+      <div class="card-body">
+        <div class="act"><span class="time">10h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/CF_Tornoto_Eaton_Centre_202205.jpg/330px-CF_Tornoto_Eaton_Centre_202205.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Eaton Centre</div></div></div>
+        <div class="act"><span class="time">14h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yorkdale_Mall.jpg/330px-Yorkdale_Mall.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Yorkdale Shopping Centre</div><div class="note">Mall premium</div></div></div>
+        <div class="act"><span class="time">17h00</span><span class="thumb placeholder d-eat">🍽️</span><div class="act-text"><div class="name">Dîner en ville</div></div></div>
+        <div class="act"><span class="time">20h30</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Toronto_-_ON_-_Toronto_Harbourfront7.jpg/330px-Toronto_-_ON_-_Toronto_Harbourfront7.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">CN Tower de nuit</div></div></div>
+        <div class="act"><span class="time">23h00</span><span class="thumb placeholder d-night">🎶</span><div class="act-text"><div class="name">Rebel Nightclub</div><div class="note">Vérifier la programmation</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOUR 7 -->
+  <section class="day" data-day="7">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-meta">
+          <span class="day-num">Jour 07 / 10</span>
+          <span class="badge b-toronto">Toronto</span>
+        </div>
+        <div class="date-line">Samedi 26 juillet</div>
+        <div class="title">Toronto Island + Polson Pier</div>
+      </div>
+      <div class="card-body">
+        <div class="act"><span class="time">11h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Toronto_Islands_2025-05-08.jpg/330px-Toronto_Islands_2025-05-08.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Toronto Island en bateau</div><div class="note">Ferry depuis Jack Layton Ferry Terminal</div></div></div>
+        <div class="act"><span class="time">16h00</span><span class="thumb placeholder d-eat">🍽️</span><div class="act-text"><div class="name">Dîner + repos avant soirée</div></div></div>
+        <div class="act"><span class="time">23h00</span><span class="thumb placeholder d-night">🌃</span><div class="act-text"><div class="name">Polson Pier de nuit</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOUR 8 -->
+  <section class="day" data-day="8">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-meta">
+          <span class="day-num">Jour 08 / 10</span>
+          <span class="badge b-toronto">Toronto</span>
+        </div>
+        <div class="date-line">Dimanche 27 juillet</div>
+        <div class="title">Square One + Future Nightclub</div>
+      </div>
+      <div class="card-body">
+        <div class="act"><span class="time">11h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Aerial_view_of_Square_One_Shopping_Centre_2022.jpg/330px-Aerial_view_of_Square_One_Shopping_Centre_2022.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Square One Shopping Centre</div><div class="note">Mississauga (~30 min)</div></div></div>
+        <div class="act"><span class="time">17h00</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Retour hôtel, préparation bagages</div></div></div>
+        <div class="act"><span class="time">19h00</span><span class="thumb placeholder d-eat">🍔</span><div class="act-text"><div class="name">Dernier dîner à Toronto</div></div></div>
+        <div class="act"><span class="time">23h00</span><span class="thumb placeholder d-night">🎶</span><div class="act-text"><div class="name">Future Nightclub</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOUR 9 -->
+  <section class="day" data-day="9">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-meta">
+          <span class="day-num">Jour 09 / 10</span>
+          <span class="badge b-quebec">Québec</span>
+        </div>
+        <div class="date-line">Lundi 28 juillet</div>
+        <div class="title">Route vers Québec</div>
+      </div>
+      <div class="card-body">
+        <div class="act"><span class="time">10h00</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-out Town Inn Suites</div></div></div>
+        <div class="act"><span class="time">10h30</span><span class="thumb placeholder d-drive">🚗</span><div class="act-text"><div class="name">Trajet Toronto → Québec City</div><div class="note">~7h30 — prévoir des pauses</div></div></div>
+        <div class="act"><span class="time">19h00</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-in hôtel Québec</div></div></div>
+        <div class="act"><span class="time">20h30</span><span class="thumb d-eat"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Le_tourisme_dans_le_vieux_Qu%C3%A9bec.jpg/330px-Le_tourisme_dans_le_vieux_Qu%C3%A9bec.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Dîner dans le Vieux-Québec</div><div class="note">Rue Saint-Jean ou Grande-Allée</div></div></div>
+        <div class="act"><span class="time">22h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Terrasse_Dufferin_2.jpg/330px-Terrasse_Dufferin_2.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Château Frontenac & Terrasse Dufferin</div><div class="note">Balade nocturne</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOUR 10 -->
+  <section class="day" data-day="10">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-meta">
+          <span class="day-num">Jour 10 / 10</span>
+          <span class="badge b-quebec">Québec</span>
+        </div>
+        <div class="date-line">Mardi 29 juillet</div>
+        <div class="title">Québec → Montréal → Départ</div>
+      </div>
+      <div class="card-body">
+        <div class="act"><span class="time">08h30</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Qu%C3%A9bec-Place_Royale_2011.JPG/330px-Qu%C3%A9bec-Place_Royale_2011.JPG" alt="" loading="lazy"></span><div class="act-text"><div class="name">Vieux-Québec le matin</div><div class="note">Place Royale, rue du Petit-Champlain</div></div></div>
+        <div class="act"><span class="time">10h30</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Montmorency_Falls_01.jpg/330px-Montmorency_Falls_01.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Chute Montmorency (optionnel)</div><div class="note">À 15 min de Québec</div></div></div>
+        <div class="act"><span class="time">12h30</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-out hôtel Québec</div></div></div>
+        <div class="act"><span class="time">13h00</span><span class="thumb placeholder d-drive">🚗</span><div class="act-text"><div class="name">Trajet Québec → Montréal (YUL)</div><div class="note">~2h30 — retour voiture de location</div></div></div>
+        <div class="act"><span class="time">17h00</span><span class="thumb d-hotel"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/YUL.U.S._Departures.Sector.Control.Tower.jpg/330px-YUL.U.S._Departures.Sector.Control.Tower.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Arrivée aéroport YUL</div><div class="note">Enregistrement, dîner aéroport</div></div></div>
+        <div class="act"><span class="time">23h40</span><span class="thumb placeholder d-flight">✈️</span><div class="act-text"><div class="name">Décollage</div></div></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<nav class="pager">
+  <button class="pager-btn" id="prev" aria-label="Jour précédent">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <div class="dots" id="dots"></div>
+  <button class="pager-btn" id="next" aria-label="Jour suivant">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+</nav>
+
+<script>
+  const swiper = document.getElementById('swiper');
+  const days = swiper.querySelectorAll('.day');
+  const dotsEl = document.getElementById('dots');
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+
+  // Build dots
+  days.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot';
+    d.setAttribute('aria-label', `Jour ${i + 1}`);
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+  const dots = dotsEl.querySelectorAll('.dot');
+
+  let current = 0;
+  function update() {
+    const w = swiper.clientWidth;
+    current = Math.round(swiper.scrollLeft / w);
+    current = Math.max(0, Math.min(days.length - 1, current));
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    prev.disabled = current === 0;
+    next.disabled = current === days.length - 1;
+  }
+  function goTo(i) {
+    swiper.scrollTo({ left: i * swiper.clientWidth, behavior: 'smooth' });
+  }
+
+  let raf;
+  swiper.addEventListener('scroll', () => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(update);
+  });
+  prev.addEventListener('click', () => goTo(Math.max(0, current - 1)));
+  next.addEventListener('click', () => goTo(Math.min(days.length - 1, current + 1)));
+
+  // Keyboard nav
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') goTo(Math.max(0, current - 1));
+    if (e.key === 'ArrowRight') goTo(Math.min(days.length - 1, current + 1));
+  });
+
+  // Recompute on resize
+  window.addEventListener('resize', () => {
+    swiper.scrollLeft = current * swiper.clientWidth;
+    update();
+  });
+
+  update();
+</script>
+
+</body>
+</html>
