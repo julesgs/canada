@@ -357,14 +357,12 @@
 
   /* Journée libre */
   .free-day {
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     text-align: center;
     gap: 6px;
-    padding: 24px;
+    padding: 34px 12px 10px;
   }
   .fd-orb {
     width: 84px;
@@ -383,26 +381,47 @@
   .fd-orb svg.lucide { width: 36px; height: 36px; stroke-width: 1.6; }
   .free-day .fd-title { font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
   .free-day .fd-sub { font-size: 13px; color: var(--ink-3); }
-  .fd-btn {
-    margin-top: 18px;
-    display: inline-flex;
+  /* ===== IDÉES (accordéon dépliable) ===== */
+  .ideas { margin-top: 16px; }
+  .ideas-toggle {
+    width: 100%;
+    display: flex;
     align-items: center;
-    gap: 6px;
-    border: none;
-    cursor: pointer;
+    gap: 9px;
+    border: 1px solid color-mix(in srgb, var(--a) 25%, transparent);
+    background: color-mix(in srgb, var(--a) 6%, var(--card));
+    color: var(--a);
     font-family: inherit;
     font-size: 13.5px;
     font-weight: 700;
     letter-spacing: -0.01em;
-    color: #fff;
-    background: var(--a);
-    padding: 11px 18px 11px 20px;
-    border-radius: 100px;
-    box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--a) 65%, transparent);
+    padding: 12px 14px;
+    border-radius: 15px;
+    cursor: pointer;
     transition: transform 0.15s;
   }
-  .fd-btn:active { transform: scale(0.95); }
-  .fd-btn svg.lucide { width: 15px; height: 15px; stroke-width: 2.4; }
+  .ideas-toggle:active { transform: scale(0.98); }
+  .ideas-toggle svg.lucide { width: 17px; height: 17px; }
+  .ideas-count {
+    font-size: 11px;
+    font-weight: 800;
+    background: var(--a);
+    color: #fff;
+    border-radius: 100px;
+    padding: 1px 7px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ideas-toggle .chev { margin-left: auto; transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+  .ideas.open .chev { transform: rotate(180deg); }
+  .ideas-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .ideas.open .ideas-panel { grid-template-rows: 1fr; }
+  .ideas-inner { overflow: hidden; min-height: 0; padding: 2px 4px 0; }
+  .ideas-inner .group-title { padding-top: 14px; }
+  .ideas-inner .idea-item:last-child { border-bottom: none; }
 
   /* ===== GROUP (checklist + idées) ===== */
   .group + .group { margin-top: 20px; }
@@ -741,7 +760,6 @@
           <div class="fd-orb"><i data-lucide="cloud-sun"></i></div>
           <div class="fd-title">Journée libre à Toronto</div>
           <div class="fd-sub">Aucune réservation — improvisez !</div>
-          <button class="fd-btn" data-goto="idees-tor">Voir les idées <i data-lucide="arrow-right"></i></button>
         </div>
       </div>
     </div>
@@ -762,7 +780,6 @@
           <div class="fd-orb"><i data-lucide="cloud-sun"></i></div>
           <div class="fd-title">Journée libre à Toronto</div>
           <div class="fd-sub">Aucune réservation — improvisez !</div>
-          <button class="fd-btn" data-goto="idees-tor">Voir les idées <i data-lucide="arrow-right"></i></button>
         </div>
       </div>
     </div>
@@ -823,76 +840,6 @@
     </div>
   </section>
 
-  <section class="day a-montreal" data-day="idees-mtl" data-label="Idées · MTL">
-    <div class="card">
-      <div class="card-head">
-        <div class="card-meta">
-          <span class="day-num">À faire · sans horaire</span>
-          <span class="badge">Idées</span>
-        </div>
-        <div class="date-line">Activités non réservées</div>
-        <div class="title">Montréal &amp; Bon Echo</div>
-      </div>
-      <div class="card-body">
-        <div class="group">
-          <div class="group-title">Montréal</div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="moon"></i></span><div class="idea-text"><div class="idea-name">Mont Royal — Belvédère Kondiaronk</div><div class="idea-note">Plutôt de nuit</div></div></div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="anchor"></i></span><div class="idea-text"><div class="idea-name">Vieux-Port de Montréal</div></div></div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="palette"></i></span><div class="idea-text"><div class="idea-name">Griffintown</div><div class="idea-note">Quartier, street art</div></div></div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="dice-5"></i></span><div class="idea-text"><div class="idea-name">Casino de Montréal</div><div class="idea-note">Optionnel</div></div></div>
-        </div>
-        <div class="group">
-          <div class="group-title">Lac Bon Echo</div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="mountain"></i></span><div class="idea-text"><div class="idea-name">Rocher Mazinaw</div><div class="idea-note">Falaise</div></div></div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="footprints"></i></span><div class="idea-text"><div class="idea-name">Cliff Top Experience</div><div class="idea-note">Randonnée</div></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="day a-toronto" data-day="idees-tor" data-label="Idées · TOR">
-    <div class="card">
-      <div class="card-head">
-        <div class="card-meta">
-          <span class="day-num">À faire · sans horaire</span>
-          <span class="badge">Idées</span>
-        </div>
-        <div class="date-line">Activités non réservées</div>
-        <div class="title">Toronto &amp; Québec</div>
-      </div>
-      <div class="card-body">
-        <div class="group">
-          <div class="group-title">Toronto — à voir</div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="building-2"></i></span><div class="idea-text"><div class="idea-name">Yonge-Dundas Square</div><div class="idea-note">De nuit</div></div></div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="waves"></i></span><div class="idea-text"><div class="idea-name">Scarborough Bluffs</div><div class="idea-note"><a href="https://maps.app.goo.gl/SLnudDSgREpzWMZ17" target="_blank" rel="noopener">Itinéraire ↗</a></div></div></div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="trees"></i></span><div class="idea-text"><div class="idea-name">CIBC Square — parc surélevé</div></div></div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="moon"></i></span><div class="idea-text"><div class="idea-name">Polson Pier</div><div class="idea-note">De nuit</div></div></div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="ship"></i></span><div class="idea-text"><div class="idea-name">Toronto Island en bateau</div><div class="idea-note">Ferry — Jack Layton Terminal</div></div></div>
-        </div>
-        <div class="group">
-          <div class="group-title">Magasins</div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="shopping-bag"></i></span><div class="idea-text"><div class="idea-name">Eaton Centre</div></div></div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="shopping-bag"></i></span><div class="idea-text"><div class="idea-name">Yorkdale</div></div></div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="shopping-bag"></i></span><div class="idea-text"><div class="idea-name">Square One</div><div class="idea-note">Mississauga (~30 min)</div></div></div>
-        </div>
-        <div class="group">
-          <div class="group-title">Sortir</div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="music"></i></span><div class="idea-text"><div class="idea-name">Rebel Nightclub</div></div></div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="music"></i></span><div class="idea-text"><div class="idea-name">Future Nightclub</div></div></div>
-        </div>
-        <div class="group">
-          <div class="group-title">Manger</div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="utensils"></i></span><div class="idea-text"><div class="idea-name">The Burger's Priest</div></div></div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="utensils"></i></span><div class="idea-text"><div class="idea-name">Happy Burger</div></div></div>
-        </div>
-        <div class="group">
-          <div class="group-title">Québec</div>
-          <div class="idea-item"><span class="li-ico"><i data-lucide="circle-help"></i></span><div class="idea-text"><div class="idea-name">À définir</div><div class="idea-note">Vieux-Québec, Château Frontenac, Montmorency…</div></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
 </div>
 
 <nav class="pager">
@@ -909,6 +856,87 @@
 
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <script>
+  // ===== Idées par ville (accordéons dépliables sous chaque jour) =====
+  const IDEAS = {
+    montreal: { label: 'Idées à Montréal', groups: [
+      { title: null, items: [
+        { ico: 'moon', name: 'Mont Royal — Belvédère Kondiaronk', note: 'Plutôt de nuit' },
+        { ico: 'anchor', name: 'Vieux-Port de Montréal', note: '' },
+        { ico: 'palette', name: 'Griffintown', note: 'Quartier, street art' },
+        { ico: 'dice-5', name: 'Casino de Montréal', note: 'Optionnel' }
+      ]}
+    ]},
+    bonecho: { label: 'Idées au Lac Bon Echo', groups: [
+      { title: null, items: [
+        { ico: 'mountain', name: 'Rocher Mazinaw', note: 'Falaise' },
+        { ico: 'footprints', name: 'Cliff Top Experience', note: 'Randonnée' }
+      ]}
+    ]},
+    toronto: { label: 'Idées à Toronto', groups: [
+      { title: 'À voir', items: [
+        { ico: 'building-2', name: 'Yonge-Dundas Square', note: 'De nuit' },
+        { ico: 'waves', name: 'Scarborough Bluffs', note: '<a href="https://maps.app.goo.gl/SLnudDSgREpzWMZ17" target="_blank" rel="noopener">Itinéraire ↗</a>' },
+        { ico: 'trees', name: 'CIBC Square — parc surélevé', note: '' },
+        { ico: 'moon', name: 'Polson Pier', note: 'De nuit' },
+        { ico: 'ship', name: 'Toronto Island en bateau', note: 'Ferry — Jack Layton Terminal' }
+      ]},
+      { title: 'Magasins', items: [
+        { ico: 'shopping-bag', name: 'Eaton Centre', note: '' },
+        { ico: 'shopping-bag', name: 'Yorkdale', note: '' },
+        { ico: 'shopping-bag', name: 'Square One', note: 'Mississauga (~30 min)' }
+      ]},
+      { title: 'Sortir', items: [
+        { ico: 'music', name: 'Rebel Nightclub', note: '' },
+        { ico: 'music', name: 'Future Nightclub', note: '' }
+      ]},
+      { title: 'Manger', items: [
+        { ico: 'utensils', name: 'The Burger\'s Priest', note: '' },
+        { ico: 'utensils', name: 'Happy Burger', note: '' }
+      ]}
+    ]},
+    quebec: { label: 'Idées à Québec', groups: [
+      { title: null, items: [
+        { ico: 'landmark', name: 'Château Frontenac & Terrasse Dufferin', note: '' },
+        { ico: 'map', name: 'Vieux-Québec', note: 'Place Royale, rue du Petit-Champlain' },
+        { ico: 'waves', name: 'Chute Montmorency', note: 'À 15 min de Québec' }
+      ]}
+    ]}
+  };
+  const CITY_BY_DAY = {
+    '1': 'montreal', '2': 'montreal',
+    '3': 'bonecho',
+    '4': 'toronto', '5': 'toronto', '6': 'toronto', '7': 'toronto', '8': 'toronto',
+    '9': 'quebec', '10': 'quebec'
+  };
+  document.querySelectorAll('.day').forEach(sec => {
+    const def = IDEAS[CITY_BY_DAY[sec.dataset.day]];
+    if (!def) return;
+    const total = def.groups.reduce((n, g) => n + g.items.length, 0);
+    const listHtml = def.groups.map(g =>
+      (g.title ? `<div class="group-title">${g.title}</div>` : '') +
+      g.items.map(it => `
+        <div class="idea-item">
+          <span class="li-ico"><i data-lucide="${it.ico}"></i></span>
+          <div class="idea-text">
+            <div class="idea-name">${it.name}</div>
+            ${it.note ? `<div class="idea-note">${it.note}</div>` : ''}
+          </div>
+        </div>`).join('')
+    ).join('');
+    const wrap = document.createElement('div');
+    wrap.className = 'ideas';
+    wrap.innerHTML = `
+      <button class="ideas-toggle">
+        <i data-lucide="lightbulb"></i>
+        <span>${def.label}</span>
+        <span class="ideas-count">${total}</span>
+        <i data-lucide="chevron-down" class="chev"></i>
+      </button>
+      <div class="ideas-panel"><div class="ideas-inner">${listHtml}</div></div>`;
+    sec.querySelector('.card-body').appendChild(wrap);
+    wrap.querySelector('.ideas-toggle').addEventListener('click', () => wrap.classList.toggle('open'));
+  });
+
   if (window.lucide) lucide.createIcons();
 
   const swiper = document.getElementById('swiper');
@@ -970,14 +998,6 @@
   });
   prev.addEventListener('click', () => goTo(Math.max(0, current - 1)));
   next.addEventListener('click', () => goTo(Math.min(days.length - 1, current + 1)));
-
-  // Boutons "Voir les idées"
-  document.querySelectorAll('[data-goto]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = [...days].findIndex(d => d.dataset.day === btn.dataset.goto);
-      if (idx >= 0) goTo(idx);
-    });
-  });
 
   window.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') goTo(Math.max(0, current - 1));
