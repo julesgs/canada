@@ -3,11 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#f6f5f2">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f5f2">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#131211">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Canada — Juillet 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #f6f5f2;
@@ -17,40 +20,72 @@
     --ink-3: #9b968e;
     --line: #ebe8e2;
     --line-soft: #f1eee8;
+    --thumb-base: #ffffff;
 
     --c-montreal: #6b5fc7;  --c-montreal-bg: #efedfc;
     --c-lac: #4f9579;       --c-lac-bg: #e6f1eb;
     --c-toronto: #c4823f;   --c-toronto-bg: #faecd8;
     --c-quebec: #b86247;    --c-quebec-bg: #f8e3da;
 
-    --d-visit: #8a7fd0;
-    --d-eat: #5fa67e;
-    --d-night: #6b5fc7;
     --d-drive: #a39e95;
     --d-hotel: #c4923f;
-    --d-nature: #82a653;
     --d-flight: #c66f6e;
     --d-boat: #3f8cc4;
+    --d-visit: #8a7fd0;
 
     --resa: #3f8760;
-    --resa-bg: #e6f2eb;
     --resa-line: #cfe6d8;
+
+    --shadow-card: 0 1px 2px rgba(28,27,26,0.03), 0 12px 32px -16px rgba(28,27,26,0.14);
+    --shadow-dock: 0 10px 30px -12px rgba(28,27,26,0.22);
 
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
-    --pager-h: 60px;
   }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #131211;
+      --card: #1d1b1a;
+      --ink: #f1efeb;
+      --ink-2: #b3aea6;
+      --ink-3: #7a756d;
+      --line: #2c2a27;
+      --line-soft: #242220;
+      --thumb-base: #262320;
+
+      --c-montreal: #a29af0;  --c-montreal-bg: #2b2846;
+      --c-lac: #7cc3a0;       --c-lac-bg: #1e332a;
+      --c-toronto: #e0a468;   --c-toronto-bg: #3a2d1b;
+      --c-quebec: #e08e6f;    --c-quebec-bg: #3a241b;
+
+      --d-drive: #8f8a82;
+      --d-hotel: #d8a95e;
+      --d-flight: #e08d8c;
+      --d-boat: #6cb0dd;
+      --d-visit: #a89ee8;
+
+      --resa: #5cb385;
+      --resa-line: #31493c;
+
+      --shadow-card: 0 1px 2px rgba(0,0,0,0.25), 0 12px 32px -16px rgba(0,0,0,0.55);
+      --shadow-dock: 0 10px 30px -12px rgba(0,0,0,0.6);
+    }
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body {
-    height: 100vh;            /* fallback */
+    height: 100vh;
     height: -webkit-fill-available;
-    height: 100dvh;           /* Safari iOS 15.4+, modern */
+    height: 100dvh;
     overflow: hidden;
     overscroll-behavior: none;
   }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg);
+    background:
+      radial-gradient(640px 420px at 12% -6%, color-mix(in srgb, var(--c-montreal) 7%, transparent), transparent 70%),
+      radial-gradient(540px 400px at 108% 108%, color-mix(in srgb, var(--c-toronto) 6%, transparent), transparent 70%),
+      var(--bg);
     color: var(--ink);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
@@ -59,6 +94,48 @@
     letter-spacing: -0.005em;
     display: flex;
     flex-direction: column;
+  }
+
+  svg.lucide { stroke-width: 1.9; flex-shrink: 0; }
+
+  /* ===== TOP BAR ===== */
+  .topbar {
+    flex-shrink: 0;
+    padding: calc(var(--safe-top) + 14px) 20px 10px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .tb-title {
+    font-size: 13.5px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .tb-title span { font-weight: 600; color: var(--ink-3); }
+  .tb-pos {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-3);
+    transition: color 0.3s;
+    white-space: nowrap;
+  }
+  .progress {
+    flex-shrink: 0;
+    height: 3px;
+    margin: 0 20px 4px;
+    border-radius: 100px;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 100px;
+    background: var(--ink);
+    transition: background 0.3s;
   }
 
   /* ===== SWIPER ===== */
@@ -85,68 +162,75 @@
     scroll-snap-stop: always;
     display: flex;
     flex-direction: column;
-    padding: calc(var(--safe-top) + 14px) 14px 0;
+    padding: 8px 14px 4px;
     overflow: hidden;
   }
+  .a-montreal { --a: var(--c-montreal); --a-bg: var(--c-montreal-bg); }
+  .a-lac      { --a: var(--c-lac);      --a-bg: var(--c-lac-bg); }
+  .a-toronto  { --a: var(--c-toronto);  --a-bg: var(--c-toronto-bg); }
+  .a-quebec   { --a: var(--c-quebec);   --a-bg: var(--c-quebec-bg); }
+  .a-neutral  { --a: var(--ink-2);      --a-bg: var(--line-soft); }
+  .a-resa     { --a: var(--resa);       --a-bg: color-mix(in srgb, var(--resa) 12%, var(--card)); }
+
   .card {
     flex: 1;
     min-height: 0;
     background: var(--card);
     border: 1px solid var(--line);
-    border-radius: 22px;
+    border-radius: 26px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    box-shadow: 0 1px 2px rgba(28,27,26,0.03), 0 8px 24px -12px rgba(28,27,26,0.08);
+    box-shadow: var(--shadow-card);
     max-width: 560px;
     width: 100%;
     margin: 0 auto;
+    will-change: transform, opacity;
   }
 
   /* Card header */
   .card-head {
-    padding: 22px 22px 18px;
+    padding: 22px 22px 16px;
     border-bottom: 1px solid var(--line-soft);
     flex-shrink: 0;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--a, transparent) 8%, transparent), transparent 90%);
   }
   .card-meta {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
   .day-num {
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--ink-3);
+    color: var(--a, var(--ink-3));
     font-variant-numeric: tabular-nums;
   }
   .badge {
     font-size: 11px;
-    font-weight: 600;
-    padding: 4px 10px;
+    font-weight: 700;
+    padding: 4px 11px;
     border-radius: 100px;
     letter-spacing: -0.005em;
+    background: var(--a-bg);
+    color: var(--a);
   }
-  .b-montreal { background: var(--c-montreal-bg); color: var(--c-montreal); }
-  .b-lac      { background: var(--c-lac-bg);      color: var(--c-lac); }
-  .b-toronto  { background: var(--c-toronto-bg);  color: var(--c-toronto); }
-  .b-quebec   { background: var(--c-quebec-bg);   color: var(--c-quebec); }
   .date-line {
     font-size: 13px;
     font-weight: 600;
     color: var(--ink-3);
     letter-spacing: 0.01em;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
   .title {
-    font-size: 22px;
-    font-weight: 700;
+    font-size: 24px;
+    font-weight: 800;
     color: var(--ink);
-    letter-spacing: -0.022em;
-    line-height: 1.15;
+    letter-spacing: -0.03em;
+    line-height: 1.12;
   }
 
   /* Card body (scrollable) */
@@ -154,7 +238,7 @@
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    padding: 4px 22px 22px;
+    padding: 6px 20px 22px;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
   }
@@ -164,64 +248,54 @@
   .act {
     display: flex;
     gap: 12px;
-    padding: 12px 0;
+    padding: 13px 2px;
     align-items: center;
     border-bottom: 1px solid var(--line-soft);
   }
   .act:last-child { border-bottom: none; }
   .time {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--ink-3);
-    min-width: 50px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-2);
+    background: var(--line-soft);
+    border-radius: 8px;
+    padding: 4px 0;
+    min-width: 54px;
+    text-align: center;
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.01em;
     flex-shrink: 0;
   }
   .thumb {
-    width: 54px;
-    height: 54px;
-    border-radius: 11px;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
     flex-shrink: 0;
-    background: var(--line-soft);
-    position: relative;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    background: var(--line-soft);
   }
   .thumb img {
     width: 100%; height: 100%;
     object-fit: cover;
     display: block;
   }
-  .thumb::after {
-    content: "";
-    position: absolute;
-    inset: auto 0 0 0;
-    height: 3px;
+  @media (prefers-color-scheme: dark) {
+    .thumb img { filter: brightness(0.88); }
   }
-  .thumb.d-visit::after  { background: var(--d-visit); }
-  .thumb.d-eat::after    { background: var(--d-eat); }
-  .thumb.d-night::after  { background: var(--d-night); }
-  .thumb.d-drive::after  { background: var(--d-drive); }
-  .thumb.d-hotel::after  { background: var(--d-hotel); }
-  .thumb.d-nature::after { background: var(--d-nature); }
-  .thumb.d-flight::after { background: var(--d-flight); }
-  .thumb.d-boat::after   { background: var(--d-boat); }
-  .thumb.placeholder.d-visit  { background: color-mix(in srgb, var(--d-visit) 14%, var(--line-soft)); }
-  .thumb.placeholder.d-eat    { background: color-mix(in srgb, var(--d-eat) 14%, var(--line-soft)); }
-  .thumb.placeholder.d-night  { background: color-mix(in srgb, var(--d-night) 14%, var(--line-soft)); }
-  .thumb.placeholder.d-drive  { background: color-mix(in srgb, var(--d-drive) 14%, var(--line-soft)); }
-  .thumb.placeholder.d-hotel  { background: color-mix(in srgb, var(--d-hotel) 14%, var(--line-soft)); }
-  .thumb.placeholder.d-nature { background: color-mix(in srgb, var(--d-nature) 14%, var(--line-soft)); }
-  .thumb.placeholder.d-flight { background: color-mix(in srgb, var(--d-flight) 14%, var(--line-soft)); }
-  .thumb.placeholder.d-boat   { background: color-mix(in srgb, var(--d-boat) 14%, var(--line-soft)); }
+  .thumb:not(.placeholder) { box-shadow: inset 0 0 0 1px rgba(28,27,26,0.07); }
+  .thumb svg.lucide { width: 22px; height: 22px; }
+  .thumb.placeholder { box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 22%, transparent); }
+  .thumb.placeholder.d-drive  { background: color-mix(in srgb, var(--d-drive) 13%, var(--thumb-base));  color: var(--d-drive); }
+  .thumb.placeholder.d-hotel  { background: color-mix(in srgb, var(--d-hotel) 14%, var(--thumb-base));  color: var(--d-hotel); }
+  .thumb.placeholder.d-flight { background: color-mix(in srgb, var(--d-flight) 13%, var(--thumb-base)); color: var(--d-flight); }
+  .thumb.placeholder.d-boat   { background: color-mix(in srgb, var(--d-boat) 13%, var(--thumb-base));   color: var(--d-boat); }
   .act-text { flex: 1; min-width: 0; }
   .name {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--ink);
     letter-spacing: -0.01em;
   }
@@ -231,19 +305,20 @@
     margin-top: 2px;
     letter-spacing: -0.005em;
   }
-  .note a { color: var(--d-boat); font-weight: 600; text-decoration: none; }
-  .note a:active { opacity: 0.6; }
 
   /* ===== BOOKED / RÉSERVÉ ===== */
   .act.booked {
-    background: var(--resa-bg);
+    background: linear-gradient(135deg,
+      color-mix(in srgb, var(--resa) 10%, var(--card)),
+      color-mix(in srgb, var(--resa) 4%, var(--card)));
     border: 1px solid var(--resa-line);
-    border-radius: 14px;
-    padding: 12px 12px;
-    margin: 6px 0;
+    border-radius: 18px;
+    padding: 14px;
+    margin: 8px 0;
+    box-shadow: 0 10px 24px -16px color-mix(in srgb, var(--resa) 55%, transparent);
   }
   .act.booked + .act { border-top: none; }
-  .act.booked .time { color: var(--resa); }
+  .act.booked .time { color: var(--resa); background: color-mix(in srgb, var(--resa) 12%, var(--card)); }
   .resa {
     display: inline-flex;
     align-items: center;
@@ -254,49 +329,160 @@
     text-transform: uppercase;
     color: #fff;
     background: var(--resa);
-    padding: 2px 7px 2px 6px;
+    padding: 2.5px 8px 2.5px 5px;
     border-radius: 100px;
     margin-left: 6px;
     vertical-align: middle;
     white-space: nowrap;
+    box-shadow: 0 3px 8px -3px color-mix(in srgb, var(--resa) 70%, transparent);
   }
+  .resa svg.lucide { width: 12px; height: 12px; stroke-width: 2.6; }
+  .countdown {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--resa);
+    background: var(--card);
+    border-radius: 100px;
+    padding: 4px 11px 4px 8px;
+    margin-top: 8px;
+    font-variant-numeric: tabular-nums;
+    box-shadow: inset 0 0 0 1px var(--resa-line);
+  }
+  .countdown svg.lucide { width: 13px; height: 13px; }
+  .countdown.soon { color: var(--d-hotel); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--d-hotel) 35%, transparent); }
+  .countdown.passed { color: var(--ink-3); box-shadow: inset 0 0 0 1px var(--line); }
 
-  /* ===== CHECKLIST ===== */
-  .check-group + .check-group { margin-top: 18px; }
-  .check-group-title {
+  /* Journée libre */
+  .free-day {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 6px;
+    padding: 24px;
+  }
+  .fd-orb {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    background: radial-gradient(circle at 32% 28%,
+      color-mix(in srgb, var(--a) 22%, var(--card)),
+      color-mix(in srgb, var(--a) 8%, var(--card)));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--a) 20%, transparent);
+    color: var(--a);
+  }
+  .fd-orb svg.lucide { width: 36px; height: 36px; stroke-width: 1.6; }
+  .free-day .fd-title { font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+  .free-day .fd-sub { font-size: 13px; color: var(--ink-3); }
+  .fd-btn {
+    margin-top: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #fff;
+    background: var(--a);
+    padding: 11px 18px 11px 20px;
+    border-radius: 100px;
+    box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--a) 65%, transparent);
+    transition: transform 0.15s;
+  }
+  .fd-btn:active { transform: scale(0.95); }
+  .fd-btn svg.lucide { width: 15px; height: 15px; stroke-width: 2.4; }
+
+  /* ===== GROUP (checklist + idées) ===== */
+  .group + .group { margin-top: 20px; }
+  .group-title {
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ink-3);
-    padding: 8px 0 4px;
+    padding: 8px 2px 4px;
+  }
+  .li-ico {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--ink-2);
+    background: var(--line-soft);
+    transition: color 0.2s, background 0.2s;
+  }
+  .li-ico svg.lucide { width: 18px; height: 18px; }
+
+  /* Checklist */
+  .pack-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .pack-bar {
+    flex: 1;
+    height: 6px;
+    border-radius: 100px;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .pack-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 100px;
+    background: var(--resa);
+    transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .pack-count {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
   }
   .check-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 13px 0;
+    padding: 10px 2px;
     border-bottom: 1px solid var(--line-soft);
     cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
+    transition: opacity 0.2s;
   }
   .check-item:last-child { border-bottom: none; }
-  .check-emoji { font-size: 20px; width: 24px; text-align: center; flex-shrink: 0; }
+  .check-item:active { opacity: 0.6; }
   .check-box {
     width: 24px;
     height: 24px;
     flex-shrink: 0;
     border: 2px solid var(--line);
-    border-radius: 8px;
+    border-radius: 9px;
     background: var(--card);
     position: relative;
     transition: all 0.15s;
+    margin-left: auto;
   }
   .check-box::after {
     content: "";
     position: absolute;
-    left: 7px; top: 3px;
+    left: 6px; top: 2px;
     width: 6px; height: 11px;
     border: solid #fff;
     border-width: 0 2.5px 2.5px 0;
@@ -307,310 +493,401 @@
   .check-item.checked .check-box::after { transform: rotate(45deg) scale(1); }
   .check-label {
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--ink);
     letter-spacing: -0.01em;
     transition: color 0.15s;
   }
   .check-item.checked .check-label { color: var(--ink-3); text-decoration: line-through; }
+  .check-item.checked .li-ico { color: var(--resa); background: color-mix(in srgb, var(--resa) 12%, var(--card)); }
 
-  /* ===== PAGER ===== */
-  .pager {
-    flex-shrink: 0;
-    min-height: var(--pager-h);
-    padding: 8px 16px calc(8px + var(--safe-bottom)) 16px;
+  /* Idée item */
+  .idea-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    background: var(--bg);
+    gap: 12px;
+    padding: 9px 2px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .idea-item:last-child { border-bottom: none; }
+  .idea-item .li-ico { color: var(--a, var(--ink-2)); background: color-mix(in srgb, var(--a, var(--ink-2)) 10%, var(--card)); }
+  .idea-text { flex: 1; min-width: 0; }
+  .idea-name { font-size: 14.5px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .idea-note { font-size: 12.5px; color: var(--ink-2); margin-top: 1px; }
+  .idea-note a { color: var(--d-boat); font-weight: 700; text-decoration: none; }
+  .idea-note a:active { opacity: 0.6; }
+
+  /* ===== PAGER DOCK ===== */
+  .pager {
+    flex-shrink: 0;
+    padding: 10px 16px calc(10px + var(--safe-bottom));
+    display: flex;
+    justify-content: center;
+  }
+  .dock {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: color-mix(in srgb, var(--card) 82%, transparent);
+    backdrop-filter: blur(16px) saturate(1.5);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    padding: 7px 9px;
+    box-shadow: var(--shadow-dock);
   }
   .pager-btn {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    border: 1px solid var(--line);
-    background: var(--card);
+    border: none;
+    background: var(--line-soft);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     color: var(--ink-2);
     flex-shrink: 0;
-    transition: all 0.15s;
+    transition: transform 0.15s, opacity 0.2s;
   }
-  .pager-btn:active { transform: scale(0.92); }
-  .pager-btn:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-  }
-  .pager-btn svg { width: 16px; height: 16px; }
+  .pager-btn:active { transform: scale(0.88); }
+  .pager-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .pager-btn svg { width: 15px; height: 15px; }
   .dots {
     display: flex;
-    gap: 6px;
-    flex: 1;
+    gap: 5px;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    padding: 0 2px;
   }
   .dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background: var(--line);
-    transition: all 0.25s;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     flex-shrink: 0;
     cursor: pointer;
     border: none;
     padding: 0;
   }
   .dot.active {
-    background: var(--ink);
-    width: 22px;
+    width: 20px;
     border-radius: 100px;
+    background: var(--ink);
   }
 
   @media (min-width: 720px) {
-    :root { --pager-h: 72px; }
-    .day { padding-top: 24px; padding-left: 24px; padding-right: 24px; }
+    .day { padding: 14px 24px 8px; }
     .card { max-width: 540px; }
-    .pager-btn { width: 44px; height: 44px; }
+    .topbar, .progress { max-width: 588px; margin-left: auto; margin-right: auto; width: 100%; }
+    .pager-btn { width: 40px; height: 40px; }
   }
 
   @media (max-width: 360px) {
-    .card-head { padding: 18px 18px 14px; }
-    .card-body { padding: 4px 18px 18px; }
-    .title { font-size: 19px; }
-    .thumb { width: 48px; height: 48px; font-size: 19px; }
-    .time { min-width: 46px; }
+    .card-head { padding: 18px 18px 13px; }
+    .card-body { padding: 4px 16px 18px; }
+    .title { font-size: 20px; }
+    .thumb { width: 44px; height: 44px; border-radius: 12px; }
+    .time { min-width: 48px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .swiper { scroll-behavior: auto; }
+    * { transition-duration: 0.01ms !important; }
   }
 </style>
 </head>
 <body>
 
+<header class="topbar">
+  <div class="tb-title">Canada <span>· Juillet 2026</span></div>
+  <div class="tb-pos" id="tbPos"></div>
+</header>
+<div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+
 <div class="swiper" id="swiper">
 
-  <section class="day" data-day="1">
+  <section class="day a-neutral" data-day="checklist" data-label="Checklist">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-meta">
+          <span class="day-num">Avant le départ</span>
+          <span class="badge">Checklist</span>
+        </div>
+        <div class="date-line">Sac &amp; valise</div>
+        <div class="title">À ne pas oublier</div>
+        <div class="pack-progress">
+          <div class="pack-bar"><div class="pack-fill" id="packFill"></div></div>
+          <span class="pack-count" id="packCount">0/7</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="group">
+          <div class="group-title">Documents</div>
+          <div class="check-item" data-key="passeport"><span class="li-ico"><i data-lucide="book-marked"></i></span><span class="check-label">Passeport</span><span class="check-box"></span></div>
+          <div class="check-item" data-key="carte-id"><span class="li-ico"><i data-lucide="id-card"></i></span><span class="check-label">Carte d'identité</span><span class="check-box"></span></div>
+          <div class="check-item" data-key="permis"><span class="li-ico"><i data-lucide="car-front"></i></span><span class="check-label">Permis de conduire</span><span class="check-box"></span></div>
+        </div>
+        <div class="group">
+          <div class="group-title">Électronique</div>
+          <div class="check-item" data-key="batterie"><span class="li-ico"><i data-lucide="battery-charging"></i></span><span class="check-label">Batterie externe</span><span class="check-box"></span></div>
+          <div class="check-item" data-key="ecouteurs"><span class="li-ico"><i data-lucide="headphones"></i></span><span class="check-label">Écouteurs filaires</span><span class="check-box"></span></div>
+          <div class="check-item" data-key="adaptateur"><span class="li-ico"><i data-lucide="plug-zap"></i></span><span class="check-label">Adaptateur de prises</span><span class="check-box"></span></div>
+          <div class="check-item" data-key="airtags"><span class="li-ico"><i data-lucide="map-pin"></i></span><span class="check-label">AirTags</span><span class="check-box"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="day a-montreal" data-day="1" data-label="J1 · 20 juil.">
     <div class="card">
       <div class="card-head">
         <div class="card-meta">
           <span class="day-num">Jour 01 / 10</span>
-          <span class="badge b-montreal">Montréal</span>
+          <span class="badge">Montréal</span>
         </div>
         <div class="date-line">Lundi 20 juillet</div>
         <div class="title">Arrivée à Montréal</div>
       </div>
       <div class="card-body">
         <div class="act"><span class="time">16h35</span><span class="thumb d-flight"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/YUL.U.S._Departures.Sector.Control.Tower.jpg/330px-YUL.U.S._Departures.Sector.Control.Tower.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Atterrissage Montréal (YUL)</div><div class="note">Récupération bagages + voiture de location</div></div></div>
-        <div class="act"><span class="time">~19h00</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-in Ruby Foo's Hotel</div><div class="note">20 → 22 juillet · 2 nuits</div></div></div>
-        <div class="act"><span class="time">~21h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Mont_Real_Hilltop_4_db.jpg/330px-Mont_Real_Hilltop_4_db.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Mont Royal — Belvédère Kondiaronk</div><div class="note">Vue panoramique de nuit</div></div></div>
+        <div class="act"><span class="time">~19h00</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-in Ruby Foo's Hotel</div><div class="note">20 → 22 juillet · 2 nuits</div></div></div>
       </div>
     </div>
   </section>
 
-  <section class="day" data-day="2">
+  <section class="day a-montreal" data-day="2" data-label="J2 · 21 juil.">
     <div class="card">
       <div class="card-head">
         <div class="card-meta">
           <span class="day-num">Jour 02 / 10</span>
-          <span class="badge b-montreal">Montréal</span>
+          <span class="badge">Montréal</span>
         </div>
         <div class="date-line">Mardi 21 juillet</div>
-        <div class="title">Exploration Montréal</div>
+        <div class="title">Croisière à Montréal</div>
       </div>
       <div class="card-body">
-        <div class="act"><span class="time">10h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Montreal_Old_port.jpg/330px-Montreal_Old_port.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Vieux-Port de Montréal</div><div class="note">Balade, quais et marché</div></div></div>
-        <div class="act booked"><span class="time">13h00</span><span class="thumb placeholder d-boat">🛥️</span><div class="act-text"><div class="name">Croisière en bateau <span class="resa">✓ Réservé</span></div><div class="note">Réservation confirmée</div></div></div>
-        <div class="act"><span class="time">15h30</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Griffintown_delamontagne.jpg/330px-Griffintown_delamontagne.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Griffintown</div><div class="note">Quartier, street art</div></div></div>
-        <div class="act"><span class="time">20h00</span><span class="thumb d-night"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Casino_de_Montr%C3%A9al_%28entr%C3%A9e%29.jpg/330px-Casino_de_Montr%C3%A9al_%28entr%C3%A9e%29.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Casino de Montréal</div><div class="note">Optionnel — Île Notre-Dame</div></div></div>
+        <div class="act booked" data-when="2026-07-21T13:00:00-04:00"><span class="time">13h00</span><span class="thumb placeholder d-boat"><i data-lucide="sailboat"></i></span><div class="act-text"><div class="name">Croisière en bateau <span class="resa"><i data-lucide="check"></i> Réservé</span></div><div class="countdown"><i data-lucide="clock"></i><span class="cd-txt"></span></div></div></div>
       </div>
     </div>
   </section>
 
-  <section class="day" data-day="3">
+  <section class="day a-lac" data-day="3" data-label="J3 · 22 juil.">
     <div class="card">
       <div class="card-head">
         <div class="card-meta">
           <span class="day-num">Jour 03 / 10</span>
-          <span class="badge b-lac">Lac Bon Echo</span>
+          <span class="badge">Lac Bon Echo</span>
         </div>
         <div class="date-line">Mercredi 22 juillet</div>
         <div class="title">Route vers Bon Echo</div>
       </div>
       <div class="card-body">
-        <div class="act"><span class="time">09h00</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-out Ruby Foo's</div></div></div>
-        <div class="act"><span class="time">09h30</span><span class="thumb placeholder d-drive">🚗</span><div class="act-text"><div class="name">Trajet Montréal → Parc Bon Echo</div><div class="note">~2h30</div></div></div>
-        <div class="act"><span class="time">12h30</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-in Lakeside Inn</div><div class="note">22 → 23 juillet · 1 nuit</div></div></div>
-        <div class="act"><span class="time">14h00</span><span class="thumb d-nature"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Mazinaw_Rock%2C_Bon_Echo.jpg/330px-Mazinaw_Rock%2C_Bon_Echo.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Rocher Mazinaw</div><div class="note">Falaise</div></div></div>
-        <div class="act"><span class="time">16h30</span><span class="thumb d-nature"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Upper_Mazinaw_Lake%2C_Mazinaw_Rock.jpg/330px-Upper_Mazinaw_Lake%2C_Mazinaw_Rock.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Cliff Top Experience</div><div class="note">Randonnée</div></div></div>
-        <div class="act"><span class="time">20h00</span><span class="thumb placeholder d-eat">🔥</span><div class="act-text"><div class="name">Dîner</div></div></div>
+        <div class="act"><span class="time">09h00</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-out Ruby Foo's</div></div></div>
+        <div class="act"><span class="time">09h30</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Montréal → Parc Bon Echo</div><div class="note">~2h30 de route</div></div></div>
+        <div class="act"><span class="time">12h30</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-in Lakeside Inn</div><div class="note">22 → 23 juillet · 1 nuit</div></div></div>
       </div>
     </div>
   </section>
 
-  <section class="day" data-day="4">
+  <section class="day a-toronto" data-day="4" data-label="J4 · 23 juil.">
     <div class="card">
       <div class="card-head">
         <div class="card-meta">
           <span class="day-num">Jour 04 / 10</span>
-          <span class="badge b-toronto">Toronto</span>
+          <span class="badge">Toronto</span>
         </div>
         <div class="date-line">Jeudi 23 juillet</div>
         <div class="title">Route vers Toronto</div>
       </div>
       <div class="card-body">
-        <div class="act"><span class="time">09h00</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-out Lakeside Inn</div></div></div>
-        <div class="act"><span class="time">09h30</span><span class="thumb placeholder d-drive">🚗</span><div class="act-text"><div class="name">Trajet Bon Echo → Toronto</div><div class="note">~3h30</div></div></div>
-        <div class="act"><span class="time">13h30</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-in Town Inn Suites</div><div class="note">23 → 28 juillet · 5 nuits</div></div></div>
-        <div class="act"><span class="time">15h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Scarborough_Bluffs%2C_May_4_2026_%2807%29.jpg/330px-Scarborough_Bluffs%2C_May_4_2026_%2807%29.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Scarborough Bluffs</div><div class="note">Falaises au bord du lac Ontario · <a href="https://maps.app.goo.gl/SLnudDSgREpzWMZ17" target="_blank" rel="noopener">Itinéraire ↗</a></div></div></div>
-        <div class="act"><span class="time">17h30</span><span class="thumb placeholder d-nature">🌳</span><div class="act-text"><div class="name">CIBC Square — parc surélevé</div><div class="note">Parc au-dessus des voies, près d'Union</div></div></div>
-        <div class="act"><span class="time">20h00</span><span class="thumb placeholder d-eat">🍔</span><div class="act-text"><div class="name">The Burger's Priest</div></div></div>
-        <div class="act"><span class="time">22h00</span><span class="thumb d-night"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Yonge-Dundas_square.jpg/330px-Yonge-Dundas_square.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Yonge-Dundas Square de nuit</div></div></div>
+        <div class="act"><span class="time">09h00</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-out Lakeside Inn</div></div></div>
+        <div class="act"><span class="time">09h30</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Bon Echo → Toronto</div><div class="note">~3h30 de route</div></div></div>
+        <div class="act"><span class="time">13h30</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-in Town Inn Suites</div><div class="note">23 → 28 juillet · 5 nuits</div></div></div>
       </div>
     </div>
   </section>
 
-  <section class="day" data-day="5">
+  <section class="day a-toronto" data-day="5" data-label="J5 · 24 juil.">
     <div class="card">
       <div class="card-head">
         <div class="card-meta">
           <span class="day-num">Jour 05 / 10</span>
-          <span class="badge b-toronto">Toronto</span>
+          <span class="badge">Toronto</span>
         </div>
         <div class="date-line">Vendredi 24 juillet</div>
-        <div class="title">Shopping + Tour CN</div>
+        <div class="title">Tour CN</div>
       </div>
       <div class="card-body">
-        <div class="act"><span class="time">10h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/CF_Tornoto_Eaton_Centre_202205.jpg/330px-CF_Tornoto_Eaton_Centre_202205.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Eaton Centre</div></div></div>
-        <div class="act"><span class="time">14h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yorkdale_Mall.jpg/330px-Yorkdale_Mall.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Yorkdale Shopping Centre</div><div class="note">Mall premium</div></div></div>
-        <div class="act"><span class="time">17h00</span><span class="thumb placeholder d-eat">🍽️</span><div class="act-text"><div class="name">Dîner en ville</div></div></div>
-        <div class="act booked"><span class="time">20h45</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Toronto_-_ON_-_Toronto_Harbourfront7.jpg/330px-Toronto_-_ON_-_Toronto_Harbourfront7.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Tour CN <span class="resa">✓ Réservé</span></div><div class="note">Accès de nuit · réservation confirmée</div></div></div>
-        <div class="act"><span class="time">23h00</span><span class="thumb placeholder d-night">🎶</span><div class="act-text"><div class="name">Rebel Nightclub</div><div class="note">Vérifier la programmation</div></div></div>
+        <div class="act booked" data-when="2026-07-24T20:45:00-04:00"><span class="time">20h45</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Toronto_-_ON_-_Toronto_Harbourfront7.jpg/330px-Toronto_-_ON_-_Toronto_Harbourfront7.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Tour CN <span class="resa"><i data-lucide="check"></i> Réservé</span></div><div class="note">Accès de nuit</div><div class="countdown"><i data-lucide="clock"></i><span class="cd-txt"></span></div></div></div>
       </div>
     </div>
   </section>
 
-  <section class="day" data-day="6">
+  <section class="day a-toronto" data-day="6" data-label="J6 · 25 juil.">
     <div class="card">
       <div class="card-head">
         <div class="card-meta">
           <span class="day-num">Jour 06 / 10</span>
-          <span class="badge b-toronto">Toronto</span>
+          <span class="badge">Toronto</span>
         </div>
         <div class="date-line">Samedi 25 juillet</div>
-        <div class="title">Toronto Island + Polson Pier</div>
+        <div class="title">Journée libre</div>
       </div>
       <div class="card-body">
-        <div class="act"><span class="time">11h00</span><span class="thumb d-boat"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Toronto_Islands_2025-05-08.jpg/330px-Toronto_Islands_2025-05-08.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Toronto Island en bateau</div><div class="note">Ferry depuis Jack Layton Ferry Terminal</div></div></div>
-        <div class="act"><span class="time">16h00</span><span class="thumb placeholder d-eat">🍽️</span><div class="act-text"><div class="name">Dîner + repos avant soirée</div></div></div>
-        <div class="act"><span class="time">20h00</span><span class="thumb placeholder d-eat">🍔</span><div class="act-text"><div class="name">Happy Burger</div></div></div>
-        <div class="act"><span class="time">23h00</span><span class="thumb placeholder d-night">🌃</span><div class="act-text"><div class="name">Polson Pier de nuit</div></div></div>
+        <div class="free-day">
+          <div class="fd-orb"><i data-lucide="cloud-sun"></i></div>
+          <div class="fd-title">Journée libre à Toronto</div>
+          <div class="fd-sub">Aucune réservation — improvisez !</div>
+          <button class="fd-btn" data-goto="idees-tor">Voir les idées <i data-lucide="arrow-right"></i></button>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="day" data-day="7">
+  <section class="day a-toronto" data-day="7" data-label="J7 · 26 juil.">
     <div class="card">
       <div class="card-head">
         <div class="card-meta">
           <span class="day-num">Jour 07 / 10</span>
-          <span class="badge b-toronto">Toronto</span>
+          <span class="badge">Toronto</span>
         </div>
         <div class="date-line">Dimanche 26 juillet</div>
-        <div class="title">Square One + sortie</div>
+        <div class="title">Journée libre</div>
       </div>
       <div class="card-body">
-        <div class="act"><span class="time">11h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Aerial_view_of_Square_One_Shopping_Centre_2022.jpg/330px-Aerial_view_of_Square_One_Shopping_Centre_2022.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Square One Shopping Centre</div><div class="note">Mississauga (~30 min)</div></div></div>
-        <div class="act"><span class="time">17h00</span><span class="thumb placeholder d-eat">🍽️</span><div class="act-text"><div class="name">Dîner en ville</div></div></div>
-        <div class="act"><span class="time">23h00</span><span class="thumb placeholder d-night">🎶</span><div class="act-text"><div class="name">Future Nightclub</div></div></div>
+        <div class="free-day">
+          <div class="fd-orb"><i data-lucide="cloud-sun"></i></div>
+          <div class="fd-title">Journée libre à Toronto</div>
+          <div class="fd-sub">Aucune réservation — improvisez !</div>
+          <button class="fd-btn" data-goto="idees-tor">Voir les idées <i data-lucide="arrow-right"></i></button>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="day" data-day="8">
+  <section class="day a-toronto" data-day="8" data-label="J8 · 27 juil.">
     <div class="card">
       <div class="card-head">
         <div class="card-meta">
           <span class="day-num">Jour 08 / 10</span>
-          <span class="badge b-toronto">Niagara</span>
+          <span class="badge">Niagara</span>
         </div>
         <div class="date-line">Lundi 27 juillet</div>
         <div class="title">Chutes du Niagara</div>
       </div>
       <div class="card-body">
-        <div class="act"><span class="time">08h30</span><span class="thumb placeholder d-drive">🚗</span><div class="act-text"><div class="name">Départ pour Niagara Falls</div><div class="note">~1h30</div></div></div>
-        <div class="act"><span class="time">11h00</span><span class="thumb d-nature"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/3Falls_Niagara.jpg/330px-3Falls_Niagara.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Chutes du Niagara</div><div class="note">Table Rock, promenade</div></div></div>
-        <div class="act booked"><span class="time">13h00</span><span class="thumb placeholder d-boat">🚢</span><div class="act-text"><div class="name">Croisière au pied des chutes <span class="resa">✓ Réservé</span></div><div class="note">Niagara City Cruises · réservation confirmée</div></div></div>
-        <div class="act"><span class="time">18h00</span><span class="thumb placeholder d-drive">🚗</span><div class="act-text"><div class="name">Retour Toronto</div></div></div>
-        <div class="act"><span class="time">20h00</span><span class="thumb placeholder d-eat">🍽️</span><div class="act-text"><div class="name">Dîner</div></div></div>
+        <div class="act"><span class="time">08h30</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Toronto → Niagara Falls</div><div class="note">~1h30 de route</div></div></div>
+        <div class="act booked" data-when="2026-07-27T13:00:00-04:00"><span class="time">13h00</span><span class="thumb placeholder d-boat"><i data-lucide="ship"></i></span><div class="act-text"><div class="name">Croisière au pied des chutes <span class="resa"><i data-lucide="check"></i> Réservé</span></div><div class="note">Niagara City Cruises</div><div class="countdown"><i data-lucide="clock"></i><span class="cd-txt"></span></div></div></div>
+        <div class="act"><span class="time">18h00</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Niagara → Toronto</div><div class="note">~1h30 de route</div></div></div>
       </div>
     </div>
   </section>
 
-  <section class="day" data-day="9">
+  <section class="day a-quebec" data-day="9" data-label="J9 · 28 juil.">
     <div class="card">
       <div class="card-head">
         <div class="card-meta">
           <span class="day-num">Jour 09 / 10</span>
-          <span class="badge b-quebec">Québec</span>
+          <span class="badge">Québec</span>
         </div>
         <div class="date-line">Mardi 28 juillet</div>
         <div class="title">Route vers Québec</div>
       </div>
       <div class="card-body">
-        <div class="act"><span class="time">10h00</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-out Town Inn Suites</div></div></div>
-        <div class="act"><span class="time">10h30</span><span class="thumb placeholder d-drive">🚗</span><div class="act-text"><div class="name">Trajet Toronto → Québec City</div><div class="note">~7h30 — prévoir des pauses</div></div></div>
-        <div class="act"><span class="time">19h00</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-in hôtel Québec</div><div class="note">28 → 29 juillet · 1 nuit</div></div></div>
-        <div class="act"><span class="time">20h30</span><span class="thumb d-eat"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Le_tourisme_dans_le_vieux_Qu%C3%A9bec.jpg/330px-Le_tourisme_dans_le_vieux_Qu%C3%A9bec.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Dîner dans le Vieux-Québec</div><div class="note">Rue Saint-Jean ou Grande-Allée</div></div></div>
-        <div class="act"><span class="time">22h00</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Terrasse_Dufferin_2.jpg/330px-Terrasse_Dufferin_2.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Château Frontenac & Terrasse Dufferin</div></div></div>
+        <div class="act"><span class="time">10h00</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-out Town Inn Suites</div></div></div>
+        <div class="act"><span class="time">10h30</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Toronto → Québec City</div><div class="note">~7h30 de route — prévoir des pauses</div></div></div>
+        <div class="act"><span class="time">19h00</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-in hôtel Québec</div><div class="note">28 → 29 juillet · 1 nuit</div></div></div>
       </div>
     </div>
   </section>
 
-  <section class="day" data-day="10">
+  <section class="day a-quebec" data-day="10" data-label="J10 · 29 juil.">
     <div class="card">
       <div class="card-head">
         <div class="card-meta">
           <span class="day-num">Jour 10 / 10</span>
-          <span class="badge b-quebec">Québec</span>
+          <span class="badge">Québec</span>
         </div>
         <div class="date-line">Mercredi 29 juillet</div>
         <div class="title">Québec → Montréal → Départ</div>
       </div>
       <div class="card-body">
-        <div class="act"><span class="time">08h30</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Qu%C3%A9bec-Place_Royale_2011.JPG/330px-Qu%C3%A9bec-Place_Royale_2011.JPG" alt="" loading="lazy"></span><div class="act-text"><div class="name">Vieux-Québec le matin</div><div class="note">Place Royale, rue du Petit-Champlain</div></div></div>
-        <div class="act"><span class="time">10h30</span><span class="thumb d-visit"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Montmorency_Falls_01.jpg/330px-Montmorency_Falls_01.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Chute Montmorency (optionnel)</div><div class="note">À 15 min de Québec</div></div></div>
-        <div class="act"><span class="time">12h30</span><span class="thumb placeholder d-hotel">🛏️</span><div class="act-text"><div class="name">Check-out hôtel Québec</div></div></div>
-        <div class="act"><span class="time">13h00</span><span class="thumb placeholder d-drive">🚗</span><div class="act-text"><div class="name">Trajet Québec → Montréal (YUL)</div><div class="note">~2h30 — retour voiture de location</div></div></div>
-        <div class="act"><span class="time">17h00</span><span class="thumb d-hotel"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/YUL.U.S._Departures.Sector.Control.Tower.jpg/330px-YUL.U.S._Departures.Sector.Control.Tower.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Arrivée aéroport YUL</div><div class="note">Enregistrement, dîner aéroport</div></div></div>
-        <div class="act"><span class="time">23h40</span><span class="thumb placeholder d-flight">✈️</span><div class="act-text"><div class="name">Décollage</div></div></div>
+        <div class="act"><span class="time">12h30</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-out hôtel Québec</div></div></div>
+        <div class="act"><span class="time">13h00</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Québec → Montréal (YUL)</div><div class="note">~2h30 de route — retour voiture de location</div></div></div>
+        <div class="act"><span class="time">17h00</span><span class="thumb d-flight"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/YUL.U.S._Departures.Sector.Control.Tower.jpg/330px-YUL.U.S._Departures.Sector.Control.Tower.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Arrivée aéroport YUL</div><div class="note">Enregistrement</div></div></div>
+        <div class="act"><span class="time">23h40</span><span class="thumb placeholder d-flight"><i data-lucide="plane"></i></span><div class="act-text"><div class="name">Décollage</div></div></div>
       </div>
     </div>
   </section>
 
-  <section class="day" data-day="checklist">
+  <section class="day a-montreal" data-day="idees-mtl" data-label="Idées · MTL">
     <div class="card">
       <div class="card-head">
         <div class="card-meta">
-          <span class="day-num">Avant le départ</span>
-          <span class="badge b-lac">Checklist</span>
+          <span class="day-num">À faire · sans horaire</span>
+          <span class="badge">Idées</span>
         </div>
-        <div class="date-line">Sac &amp; valise</div>
-        <div class="title">À ne pas oublier</div>
+        <div class="date-line">Activités non réservées</div>
+        <div class="title">Montréal &amp; Bon Echo</div>
       </div>
       <div class="card-body">
-        <div class="check-group">
-          <div class="check-group-title">Documents</div>
-          <div class="check-item" data-key="passeport"><span class="check-emoji">🛂</span><span class="check-box"></span><span class="check-label">Passeport</span></div>
-          <div class="check-item" data-key="carte-id"><span class="check-emoji">🪪</span><span class="check-box"></span><span class="check-label">Carte d'identité</span></div>
-          <div class="check-item" data-key="permis"><span class="check-emoji">🚗</span><span class="check-box"></span><span class="check-label">Permis de conduire</span></div>
+        <div class="group">
+          <div class="group-title">Montréal</div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="moon"></i></span><div class="idea-text"><div class="idea-name">Mont Royal — Belvédère Kondiaronk</div><div class="idea-note">Plutôt de nuit</div></div></div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="anchor"></i></span><div class="idea-text"><div class="idea-name">Vieux-Port de Montréal</div></div></div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="palette"></i></span><div class="idea-text"><div class="idea-name">Griffintown</div><div class="idea-note">Quartier, street art</div></div></div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="dice-5"></i></span><div class="idea-text"><div class="idea-name">Casino de Montréal</div><div class="idea-note">Optionnel</div></div></div>
         </div>
-        <div class="check-group">
-          <div class="check-group-title">Électronique</div>
-          <div class="check-item" data-key="batterie"><span class="check-emoji">🔋</span><span class="check-box"></span><span class="check-label">Batterie externe</span></div>
-          <div class="check-item" data-key="ecouteurs"><span class="check-emoji">🎧</span><span class="check-box"></span><span class="check-label">Écouteurs filaires (pour les films)</span></div>
-          <div class="check-item" data-key="adaptateur"><span class="check-emoji">🔌</span><span class="check-box"></span><span class="check-label">Adaptateur de prises</span></div>
-          <div class="check-item" data-key="airtags"><span class="check-emoji">📍</span><span class="check-box"></span><span class="check-label">AirTags</span></div>
+        <div class="group">
+          <div class="group-title">Lac Bon Echo</div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="mountain"></i></span><div class="idea-text"><div class="idea-name">Rocher Mazinaw</div><div class="idea-note">Falaise</div></div></div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="footprints"></i></span><div class="idea-text"><div class="idea-name">Cliff Top Experience</div><div class="idea-note">Randonnée</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="day a-toronto" data-day="idees-tor" data-label="Idées · TOR">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-meta">
+          <span class="day-num">À faire · sans horaire</span>
+          <span class="badge">Idées</span>
+        </div>
+        <div class="date-line">Activités non réservées</div>
+        <div class="title">Toronto &amp; Québec</div>
+      </div>
+      <div class="card-body">
+        <div class="group">
+          <div class="group-title">Toronto — à voir</div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="building-2"></i></span><div class="idea-text"><div class="idea-name">Yonge-Dundas Square</div><div class="idea-note">De nuit</div></div></div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="waves"></i></span><div class="idea-text"><div class="idea-name">Scarborough Bluffs</div><div class="idea-note"><a href="https://maps.app.goo.gl/SLnudDSgREpzWMZ17" target="_blank" rel="noopener">Itinéraire ↗</a></div></div></div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="trees"></i></span><div class="idea-text"><div class="idea-name">CIBC Square — parc surélevé</div></div></div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="moon"></i></span><div class="idea-text"><div class="idea-name">Polson Pier</div><div class="idea-note">De nuit</div></div></div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="ship"></i></span><div class="idea-text"><div class="idea-name">Toronto Island en bateau</div><div class="idea-note">Ferry — Jack Layton Terminal</div></div></div>
+        </div>
+        <div class="group">
+          <div class="group-title">Magasins</div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="shopping-bag"></i></span><div class="idea-text"><div class="idea-name">Eaton Centre</div></div></div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="shopping-bag"></i></span><div class="idea-text"><div class="idea-name">Yorkdale</div></div></div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="shopping-bag"></i></span><div class="idea-text"><div class="idea-name">Square One</div><div class="idea-note">Mississauga (~30 min)</div></div></div>
+        </div>
+        <div class="group">
+          <div class="group-title">Sortir</div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="music"></i></span><div class="idea-text"><div class="idea-name">Rebel Nightclub</div></div></div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="music"></i></span><div class="idea-text"><div class="idea-name">Future Nightclub</div></div></div>
+        </div>
+        <div class="group">
+          <div class="group-title">Manger</div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="utensils"></i></span><div class="idea-text"><div class="idea-name">The Burger's Priest</div></div></div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="utensils"></i></span><div class="idea-text"><div class="idea-name">Happy Burger</div></div></div>
+        </div>
+        <div class="group">
+          <div class="group-title">Québec</div>
+          <div class="idea-item"><span class="li-ico"><i data-lucide="circle-help"></i></span><div class="idea-text"><div class="idea-name">À définir</div><div class="idea-note">Vieux-Québec, Château Frontenac, Montmorency…</div></div></div>
         </div>
       </div>
     </div>
@@ -619,26 +896,36 @@
 </div>
 
 <nav class="pager">
-  <button class="pager-btn" id="prev" aria-label="Jour précédent">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-  </button>
-  <div class="dots" id="dots"></div>
-  <button class="pager-btn" id="next" aria-label="Jour suivant">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-  </button>
+  <div class="dock">
+    <button class="pager-btn" id="prev" aria-label="Carte précédente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="dots" id="dots"></div>
+    <button class="pager-btn" id="next" aria-label="Carte suivante">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
 </nav>
 
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <script>
+  if (window.lucide) lucide.createIcons();
+
   const swiper = document.getElementById('swiper');
   const days = swiper.querySelectorAll('.day');
   const dotsEl = document.getElementById('dots');
   const prev = document.getElementById('prev');
   const next = document.getElementById('next');
+  const tbPos = document.getElementById('tbPos');
+  const progressFill = document.getElementById('progressFill');
+
+  const labels = [...days].map(d => d.dataset.label || '');
+  const accents = [...days].map(d => getComputedStyle(d).getPropertyValue('--a').trim());
 
   days.forEach((_, i) => {
     const d = document.createElement('button');
     d.className = 'dot';
-    d.setAttribute('aria-label', `Jour ${i + 1}`);
+    d.setAttribute('aria-label', labels[i] || `Carte ${i + 1}`);
     d.addEventListener('click', () => goTo(i));
     dotsEl.appendChild(d);
   });
@@ -647,9 +934,28 @@
   let current = 0;
   function update() {
     const w = swiper.clientWidth;
-    current = Math.round(swiper.scrollLeft / w);
-    current = Math.max(0, Math.min(days.length - 1, current));
-    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    if (!w) return;
+    const x = swiper.scrollLeft / w;
+    current = Math.max(0, Math.min(days.length - 1, Math.round(x)));
+
+    // Effet de profondeur sur les cartes voisines
+    days.forEach((day, i) => {
+      const t = Math.min(1, Math.abs(i - x));
+      const card = day.querySelector('.card');
+      card.style.transform = `scale(${1 - 0.05 * t})`;
+      card.style.opacity = 1 - 0.35 * t;
+    });
+
+    // Dots + accent courant
+    const acc = accents[current] || '';
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+      d.style.background = i === current && acc ? acc : '';
+    });
+    progressFill.style.width = (x / (days.length - 1) * 100) + '%';
+    if (acc) { progressFill.style.background = acc; tbPos.style.color = acc; }
+    tbPos.textContent = labels[current];
+
     prev.disabled = current === 0;
     next.disabled = current === days.length - 1;
   }
@@ -665,6 +971,14 @@
   prev.addEventListener('click', () => goTo(Math.max(0, current - 1)));
   next.addEventListener('click', () => goTo(Math.min(days.length - 1, current + 1)));
 
+  // Boutons "Voir les idées"
+  document.querySelectorAll('[data-goto]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = [...days].findIndex(d => d.dataset.day === btn.dataset.goto);
+      if (idx >= 0) goTo(idx);
+    });
+  });
+
   window.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') goTo(Math.max(0, current - 1));
     if (e.key === 'ArrowRight') goTo(Math.min(days.length - 1, current + 1));
@@ -675,15 +989,52 @@
     update();
   });
 
-  // Checklist — mémorisation locale
-  document.querySelectorAll('.check-item').forEach(item => {
+  // Compte à rebours des réservations (heure locale du navigateur)
+  function fmtCountdown(ms) {
+    if (ms <= 0) return { text: 'C’est passé', cls: 'passed' };
+    const totalMin = Math.floor(ms / 60000);
+    const d = Math.floor(totalMin / 1440);
+    const h = Math.floor((totalMin % 1440) / 60);
+    const m = totalMin % 60;
+    let text;
+    if (d > 0) text = `Dans ${d} j ${h} h ${m} min`;
+    else if (h > 0) text = `Dans ${h} h ${m} min`;
+    else text = `Dans ${m} min`;
+    return { text, cls: ms < 86400000 ? 'soon' : '' };
+  }
+  function updateCountdowns() {
+    const now = Date.now();
+    document.querySelectorAll('[data-when]').forEach(el => {
+      const c = el.querySelector('.cd-txt');
+      if (!c) return;
+      const wrap = el.querySelector('.countdown');
+      const { text, cls } = fmtCountdown(new Date(el.dataset.when).getTime() - now);
+      c.textContent = text;
+      wrap.className = 'countdown' + (cls ? ' ' + cls : '');
+    });
+  }
+  updateCountdowns();
+  setInterval(updateCountdowns, 10000);
+
+  // Checklist — mémorisation locale + progression
+  const checkItems = document.querySelectorAll('.check-item');
+  const packFill = document.getElementById('packFill');
+  const packCount = document.getElementById('packCount');
+  function updatePack() {
+    const done = document.querySelectorAll('.check-item.checked').length;
+    packFill.style.width = (done / checkItems.length * 100) + '%';
+    packCount.textContent = `${done}/${checkItems.length}`;
+  }
+  checkItems.forEach(item => {
     const key = 'pack:' + item.dataset.key;
     if (localStorage.getItem(key) === '1') item.classList.add('checked');
     item.addEventListener('click', () => {
       const on = item.classList.toggle('checked');
       try { localStorage.setItem(key, on ? '1' : '0'); } catch (e) {}
+      updatePack();
     });
   });
+  updatePack();
 
   update();
 </script>
