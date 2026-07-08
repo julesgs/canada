@@ -82,18 +82,32 @@
   }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background:
-      radial-gradient(640px 420px at 12% -6%, color-mix(in srgb, var(--c-montreal) 7%, transparent), transparent 70%),
-      radial-gradient(540px 400px at 108% 108%, color-mix(in srgb, var(--c-toronto) 6%, transparent), transparent 70%),
-      var(--bg);
+    background: #000;
     color: var(--ink);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01", "cv11";
     letter-spacing: -0.005em;
+  }
+
+  /* Wrapper qui recule quand la feuille s'ouvre */
+  .app {
+    position: relative;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    background:
+      radial-gradient(640px 420px at 12% -6%, color-mix(in srgb, var(--c-montreal) 7%, transparent), transparent 70%),
+      radial-gradient(540px 400px at 108% 108%, color-mix(in srgb, var(--c-toronto) 6%, transparent), transparent 70%),
+      var(--bg);
+    transform-origin: center top;
+    transition: transform 0.45s cubic-bezier(0.32, 0.72, 0, 1), border-radius 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  body.sheet-open .app {
+    transform: scale(0.925) translateY(calc(var(--safe-top) + 10px));
+    border-radius: 28px;
   }
 
   svg.lucide { stroke-width: 1.9; flex-shrink: 0; }
@@ -381,10 +395,10 @@
   .fd-orb svg.lucide { width: 36px; height: 36px; stroke-width: 1.6; }
   .free-day .fd-title { font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
   .free-day .fd-sub { font-size: 13px; color: var(--ink-3); }
-  /* ===== IDÉES (accordéon dépliable) ===== */
-  .ideas { margin-top: 16px; }
-  .ideas-toggle {
+  /* ===== IDÉES — déclencheur + feuille modale ===== */
+  .ideas-trigger {
     width: 100%;
+    margin-top: 16px;
     display: flex;
     align-items: center;
     gap: 9px;
@@ -395,13 +409,14 @@
     font-size: 13.5px;
     font-weight: 700;
     letter-spacing: -0.01em;
-    padding: 12px 14px;
+    padding: 13px 14px;
     border-radius: 15px;
     cursor: pointer;
     transition: transform 0.15s;
   }
-  .ideas-toggle:active { transform: scale(0.98); }
-  .ideas-toggle svg.lucide { width: 17px; height: 17px; }
+  .ideas-trigger:active { transform: scale(0.98); }
+  .ideas-trigger svg.lucide { width: 17px; height: 17px; }
+  .ideas-trigger .it-arrow { margin-left: auto; opacity: 0.65; }
   .ideas-count {
     font-size: 11px;
     font-weight: 800;
@@ -411,17 +426,93 @@
     padding: 1px 7px;
     font-variant-numeric: tabular-nums;
   }
-  .ideas-toggle .chev { margin-left: auto; transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
-  .ideas.open .chev { transform: rotate(180deg); }
-  .ideas-panel {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+
+  .scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(0,0,0,0.28);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
   }
-  .ideas.open .ideas-panel { grid-template-rows: 1fr; }
-  .ideas-inner { overflow: hidden; min-height: 0; padding: 2px 4px 0; }
-  .ideas-inner .group-title { padding-top: 14px; }
-  .ideas-inner .idea-item:last-child { border-bottom: none; }
+  .scrim.show { opacity: 1; pointer-events: auto; }
+
+  .sheet {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 50;
+    margin: 0 auto;
+    max-width: 588px;
+    max-height: 86dvh;
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border-radius: 26px 26px 0 0;
+    box-shadow: 0 -12px 44px -14px rgba(0,0,0,0.4);
+    transform: translateY(101%);
+    transition: transform 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+    padding-bottom: calc(var(--safe-bottom) + 6px);
+    touch-action: none;
+  }
+  .sheet.show { transform: translateY(0); }
+  .sheet-grab {
+    width: 40px;
+    height: 5px;
+    border-radius: 100px;
+    background: var(--line);
+    margin: 9px auto 2px;
+    flex-shrink: 0;
+  }
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 20px 14px;
+    border-bottom: 1px solid var(--line-soft);
+    flex-shrink: 0;
+    cursor: grab;
+  }
+  .sheet-kicker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--a, var(--ink-3));
+    margin-bottom: 2px;
+  }
+  .sheet-title {
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  .sheet-close {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--line-soft);
+    color: var(--ink-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .sheet-close:active { transform: scale(0.9); }
+  .sheet-close svg.lucide { width: 17px; height: 17px; }
+  .sheet-body {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 4px 20px 18px;
+    touch-action: pan-y;
+  }
+  .sheet-body::-webkit-scrollbar { width: 0; }
+  .sheet-body .group:first-child .group-title { padding-top: 8px; }
+  .sheet-body .idea-item:last-child { border-bottom: none; }
 
   /* ===== GROUP (checklist + idées) ===== */
   .group + .group { margin-top: 20px; }
@@ -620,6 +711,8 @@
 </head>
 <body>
 
+<div class="app" id="app">
+
 <header class="topbar">
   <div class="tb-title">Canada <span>· Juillet 2026</span></div>
   <div class="tb-pos" id="tbPos"></div>
@@ -759,7 +852,7 @@
         <div class="free-day">
           <div class="fd-orb"><i data-lucide="cloud-sun"></i></div>
           <div class="fd-title">Journée libre à Toronto</div>
-          <div class="fd-sub">Aucune réservation — improvisez !</div>
+          <div class="fd-sub">Aucune réservation</div>
         </div>
       </div>
     </div>
@@ -779,7 +872,7 @@
         <div class="free-day">
           <div class="fd-orb"><i data-lucide="cloud-sun"></i></div>
           <div class="fd-title">Journée libre à Toronto</div>
-          <div class="fd-sub">Aucune réservation — improvisez !</div>
+          <div class="fd-sub">Aucune réservation</div>
         </div>
       </div>
     </div>
@@ -854,16 +947,31 @@
   </div>
 </nav>
 
+</div><!-- /.app -->
+
+<div class="scrim" id="scrim"></div>
+<aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet-grab"></div>
+  <div class="sheet-head" id="sheetHead">
+    <div>
+      <div class="sheet-kicker">À faire · sans horaire</div>
+      <div class="sheet-title" id="sheetTitle">Idées</div>
+    </div>
+    <button class="sheet-close" id="sheetClose" aria-label="Fermer"><i data-lucide="x"></i></button>
+  </div>
+  <div class="sheet-body" id="sheetBody"></div>
+</aside>
+
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <script>
   // ===== Idées par ville (accordéons dépliables sous chaque jour) =====
   const IDEAS = {
-    montreal: { label: 'Idées à Montréal', groups: [
+    montreal: { label: 'A faire - Montréal', groups: [
       { title: null, items: [
         { ico: 'moon', name: 'Mont Royal — Belvédère Kondiaronk', note: 'Plutôt de nuit' },
         { ico: 'anchor', name: 'Vieux-Port de Montréal', note: '' },
         { ico: 'palette', name: 'Griffintown', note: 'Quartier, street art' },
-        { ico: 'dice-5', name: 'Casino de Montréal', note: 'Optionnel' }
+        { ico: 'dice-5', name: 'Casino de Montréal', note: '' }
       ]}
     ]},
     bonecho: { label: 'Idées au Lac Bon Echo', groups: [
@@ -872,7 +980,7 @@
         { ico: 'footprints', name: 'Cliff Top Experience', note: 'Randonnée' }
       ]}
     ]},
-    toronto: { label: 'Idées à Toronto', groups: [
+    toronto: { label: 'A faire - Toronto', groups: [
       { title: 'À voir', items: [
         { ico: 'building-2', name: 'Yonge-Dundas Square', note: 'De nuit' },
         { ico: 'waves', name: 'Scarborough Bluffs', note: '<a href="https://maps.app.goo.gl/SLnudDSgREpzWMZ17" target="_blank" rel="noopener">Itinéraire ↗</a>' },
@@ -894,7 +1002,7 @@
         { ico: 'utensils', name: 'Happy Burger', note: '' }
       ]}
     ]},
-    quebec: { label: 'Idées à Québec', groups: [
+    quebec: { label: 'A faire - Québec', groups: [
       { title: null, items: [
         { ico: 'landmark', name: 'Château Frontenac & Terrasse Dufferin', note: '' },
         { ico: 'map', name: 'Vieux-Québec', note: 'Place Royale, rue du Petit-Champlain' },
@@ -908,11 +1016,10 @@
     '4': 'toronto', '5': 'toronto', '6': 'toronto', '7': 'toronto', '8': 'toronto',
     '9': 'quebec', '10': 'quebec'
   };
-  document.querySelectorAll('.day').forEach(sec => {
-    const def = IDEAS[CITY_BY_DAY[sec.dataset.day]];
-    if (!def) return;
-    const total = def.groups.reduce((n, g) => n + g.items.length, 0);
-    const listHtml = def.groups.map(g =>
+  const CITY_ACCENT = { montreal: 'a-montreal', bonecho: 'a-lac', toronto: 'a-toronto', quebec: 'a-quebec' };
+  function ideasListHtml(def) {
+    return def.groups.map(g =>
+      `<div class="group">` +
       (g.title ? `<div class="group-title">${g.title}</div>` : '') +
       g.items.map(it => `
         <div class="idea-item">
@@ -921,21 +1028,79 @@
             <div class="idea-name">${it.name}</div>
             ${it.note ? `<div class="idea-note">${it.note}</div>` : ''}
           </div>
-        </div>`).join('')
+        </div>`).join('') +
+      `</div>`
     ).join('');
-    const wrap = document.createElement('div');
-    wrap.className = 'ideas';
-    wrap.innerHTML = `
-      <button class="ideas-toggle">
-        <i data-lucide="lightbulb"></i>
-        <span>${def.label}</span>
-        <span class="ideas-count">${total}</span>
-        <i data-lucide="chevron-down" class="chev"></i>
-      </button>
-      <div class="ideas-panel"><div class="ideas-inner">${listHtml}</div></div>`;
-    sec.querySelector('.card-body').appendChild(wrap);
-    wrap.querySelector('.ideas-toggle').addEventListener('click', () => wrap.classList.toggle('open'));
+  }
+
+  // Déclencheur "Idées" sous chaque jour
+  document.querySelectorAll('.day').forEach(sec => {
+    const city = CITY_BY_DAY[sec.dataset.day];
+    const def = IDEAS[city];
+    if (!def) return;
+    const total = def.groups.reduce((n, g) => n + g.items.length, 0);
+    const btn = document.createElement('button');
+    btn.className = 'ideas-trigger';
+    btn.innerHTML = `
+      <i data-lucide="lightbulb"></i>
+      <span>${def.label}</span>
+      <span class="ideas-count">${total}</span>
+      <i data-lucide="chevron-right" class="it-arrow"></i>`;
+    btn.addEventListener('click', () => openSheet(city));
+    sec.querySelector('.card-body').appendChild(btn);
   });
+
+  // ===== Feuille modale (bottom sheet) =====
+  const scrim = document.getElementById('scrim');
+  const sheet = document.getElementById('sheet');
+  const sheetBody = document.getElementById('sheetBody');
+  const sheetTitle = document.getElementById('sheetTitle');
+  let sheetOpen = false;
+
+  function openSheet(city) {
+    const def = IDEAS[city];
+    if (!def) return;
+    sheet.className = 'sheet ' + (CITY_ACCENT[city] || '');
+    sheetTitle.textContent = def.label;
+    sheetBody.innerHTML = ideasListHtml(def);
+    if (window.lucide) lucide.createIcons();
+    sheetBody.scrollTop = 0;
+    document.body.classList.add('sheet-open');
+    requestAnimationFrame(() => { scrim.classList.add('show'); sheet.classList.add('show'); });
+    sheetOpen = true;
+  }
+  function closeSheet() {
+    scrim.classList.remove('show');
+    sheet.classList.remove('show');
+    document.body.classList.remove('sheet-open');
+    sheetOpen = false;
+  }
+  scrim.addEventListener('click', closeSheet);
+  document.getElementById('sheetClose').addEventListener('click', closeSheet);
+
+  // Glisser la feuille vers le bas pour fermer
+  const grabZone = document.getElementById('sheetHead');
+  let startY = 0, dragging = false;
+  function dragStart(e) { dragging = true; startY = (e.touches ? e.touches[0].clientY : e.clientY); sheet.style.transition = 'none'; }
+  function dragMove(e) {
+    if (!dragging) return;
+    const y = (e.touches ? e.touches[0].clientY : e.clientY) - startY;
+    if (y > 0) sheet.style.transform = `translateY(${y}px)`;
+  }
+  function dragEnd(e) {
+    if (!dragging) return;
+    dragging = false;
+    sheet.style.transition = '';
+    const y = (e.changedTouches ? e.changedTouches[0].clientY : e.clientY) - startY;
+    sheet.style.transform = '';
+    if (y > 90) closeSheet();
+  }
+  grabZone.addEventListener('touchstart', dragStart, { passive: true });
+  grabZone.addEventListener('touchmove', dragMove, { passive: true });
+  grabZone.addEventListener('touchend', dragEnd);
+  grabZone.addEventListener('mousedown', dragStart);
+  window.addEventListener('mousemove', dragMove);
+  window.addEventListener('mouseup', dragEnd);
 
   if (window.lucide) lucide.createIcons();
 
