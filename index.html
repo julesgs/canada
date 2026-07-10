@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f5f2">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#131211">
+<meta name="theme-color" content="#f6f5f2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Canada — Juillet 2026</title>
@@ -13,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
+    color-scheme: light;
     --bg: #f6f5f2;
     --card: #ffffff;
     --ink: #1c1b1a;
@@ -41,35 +41,6 @@
 
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #131211;
-      --card: #1d1b1a;
-      --ink: #f1efeb;
-      --ink-2: #b3aea6;
-      --ink-3: #7a756d;
-      --line: #2c2a27;
-      --line-soft: #242220;
-      --thumb-base: #262320;
-
-      --c-montreal: #a29af0;  --c-montreal-bg: #2b2846;
-      --c-lac: #7cc3a0;       --c-lac-bg: #1e332a;
-      --c-toronto: #e0a468;   --c-toronto-bg: #3a2d1b;
-      --c-quebec: #e08e6f;    --c-quebec-bg: #3a241b;
-
-      --d-drive: #8f8a82;
-      --d-hotel: #d8a95e;
-      --d-flight: #e08d8c;
-      --d-boat: #6cb0dd;
-      --d-visit: #a89ee8;
-
-      --resa: #5cb385;
-      --resa-line: #31493c;
-
-      --shadow-card: 0 1px 2px rgba(0,0,0,0.25), 0 12px 32px -16px rgba(0,0,0,0.55);
-      --shadow-dock: 0 10px 30px -12px rgba(0,0,0,0.6);
-    }
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -152,6 +123,46 @@
     transition: background 0.3s;
   }
 
+  /* ===== HORLOGES FR / CANADA ===== */
+  .clocks {
+    flex-shrink: 0;
+    display: flex;
+    gap: 8px;
+    padding: 2px 20px 8px;
+    max-width: 588px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .clock {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    padding: 8px 13px;
+    box-shadow: var(--shadow-card);
+  }
+  .flag {
+    width: 23px;
+    height: auto;
+    border-radius: 4px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: block;
+    box-shadow: 0 0 0 1px rgba(28,27,26,0.10);
+  }
+  .clk-time {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
   /* ===== SWIPER ===== */
   .swiper {
     flex: 1;
@@ -185,6 +196,8 @@
   .a-quebec   { --a: var(--c-quebec);   --a-bg: var(--c-quebec-bg); }
   .a-neutral  { --a: var(--ink-2);      --a-bg: var(--line-soft); }
   .a-resa     { --a: var(--resa);       --a-bg: color-mix(in srgb, var(--resa) 12%, var(--card)); }
+  .a-vol      { --a: #2f6fb0;           --a-bg: #e9f1fa; }
+  .a-canada   { --a: #d52b1e;           --a-bg: #fbe9e7; }
 
   .card {
     flex: 1;
@@ -296,9 +309,6 @@
     object-fit: cover;
     display: block;
   }
-  @media (prefers-color-scheme: dark) {
-    .thumb img { filter: brightness(0.88); }
-  }
   .thumb:not(.placeholder) { box-shadow: inset 0 0 0 1px rgba(28,27,26,0.07); }
   .thumb svg.lucide { width: 22px; height: 22px; }
   .thumb.placeholder { box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 22%, transparent); }
@@ -395,6 +405,70 @@
   .fd-orb svg.lucide { width: 36px; height: 36px; stroke-width: 1.6; }
   .free-day .fd-title { font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
   .free-day .fd-sub { font-size: 13px; color: var(--ink-3); }
+
+  /* ===== BILLETS D'AVION — cartes d'embarquement ===== */
+  .pass {
+    --pass: #2f6fb0;
+    position: relative;
+    border: 1px solid color-mix(in srgb, var(--pass) 22%, var(--line));
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--card);
+    box-shadow: var(--shadow-card);
+    margin-top: 12px;
+  }
+  .group-title + .pass { margin-top: 10px; }
+  .pass-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--pass) 16%, var(--card)), color-mix(in srgb, var(--pass) 6%, var(--card)));
+  }
+  .pass-airline { display: flex; align-items: center; gap: 11px; min-width: 0; }
+  .pass-logo {
+    width: 40px; height: 40px; flex-shrink: 0;
+    border-radius: 12px;
+    background: var(--pass);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 16px -8px var(--pass);
+  }
+  .pass-logo svg.lucide { width: 21px; height: 21px; }
+  .pass-flight { font-size: 15px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .pass-op { font-size: 11.5px; font-weight: 600; color: var(--ink-3); }
+  .pass-pax { text-align: right; flex-shrink: 0; }
+  .pass-lbl { font-size: 9.5px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-3); }
+  .pass-name { font-size: 16px; font-weight: 800; letter-spacing: -0.02em; color: var(--pass); margin-top: 1px; }
+  .pass-route {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 16px 16px 14px;
+  }
+  .pass-city { min-width: 0; }
+  .pass-city.arr { text-align: right; }
+  .pass-code { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1; }
+  .pass-time { font-size: 13.5px; font-weight: 700; color: var(--ink-2); font-variant-numeric: tabular-nums; margin-top: 5px; }
+  .pass-next { display: inline-block; font-size: 10px; font-weight: 800; color: var(--pass); background: color-mix(in srgb, var(--pass) 13%, var(--card)); border-radius: 6px; padding: 1px 5px; margin-left: 5px; vertical-align: 2px; }
+  .pass-town { font-size: 11.5px; font-weight: 600; color: var(--ink-3); margin-top: 1px; }
+  .pass-mid { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; padding-bottom: 3px; }
+  .pass-dur { font-size: 10.5px; font-weight: 800; letter-spacing: 0.02em; color: var(--pass); white-space: nowrap; }
+  .pass-track { display: flex; align-items: center; gap: 5px; width: 100%; color: color-mix(in srgb, var(--pass) 40%, var(--line)); }
+  .pass-track span { flex: 1; height: 2px; border-radius: 2px; background: currentColor; }
+  .pass-track svg.lucide { width: 16px; height: 16px; color: var(--pass); flex-shrink: 0; transform: rotate(45deg); }
+  .pass-stub {
+    display: flex;
+    gap: 24px;
+    padding: 13px 16px 15px;
+    border-top: 1.5px dashed color-mix(in srgb, var(--pass) 32%, var(--line));
+    background: color-mix(in srgb, var(--pass) 5%, var(--card));
+  }
+  .pass-val { font-size: 15px; font-weight: 800; letter-spacing: 0.03em; color: var(--ink); font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .pass-val.code { color: var(--pass); letter-spacing: 0.08em; }
+
   /* ===== IDÉES — déclencheur + feuille modale ===== */
   .ideas-trigger {
     width: 100%;
@@ -627,6 +701,46 @@
   .idea-note a { color: var(--d-boat); font-weight: 700; text-decoration: none; }
   .idea-note a:active { opacity: 0.6; }
 
+  /* Bouton « Détail » (checklist) + CTA dans la feuille */
+  .detail-btn {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: inherit;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--d-boat);
+    background: color-mix(in srgb, var(--d-boat) 11%, var(--card));
+    border: none;
+    border-radius: 100px;
+    padding: 5px 11px 5px 9px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.15s;
+  }
+  .detail-btn:active { transform: scale(0.93); }
+  .detail-btn svg.lucide { width: 13px; height: 13px; }
+  .sheet-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 18px;
+    padding: 13px 14px;
+    border-radius: 14px;
+    background: var(--a, var(--ink));
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    transition: transform 0.15s;
+  }
+  .sheet-cta:active { transform: scale(0.98); }
+  .sheet-cta svg.lucide { width: 16px; height: 16px; }
+
   /* ===== PAGER DOCK ===== */
   .pager {
     flex-shrink: 0;
@@ -717,6 +831,29 @@
   <div class="tb-title">Canada <span>· Juillet 2026</span></div>
   <div class="tb-pos" id="tbPos"></div>
 </header>
+
+<div class="clocks">
+  <div class="clock">
+    <svg class="flag" viewBox="0 0 36 24" role="img" aria-label="France">
+      <rect width="36" height="24" fill="#fff"/>
+      <rect width="12" height="24" fill="#0055a4"/>
+      <rect x="24" width="12" height="24" fill="#ef4135"/>
+    </svg>
+    <span class="clk-time" id="clkFr">--:--</span>
+  </div>
+  <div class="clock">
+    <svg class="flag" viewBox="0 0 36 24" role="img" aria-label="Canada">
+      <rect width="36" height="24" fill="#fff"/>
+      <rect width="9" height="24" fill="#d52b1e"/>
+      <rect x="27" width="9" height="24" fill="#d52b1e"/>
+      <svg x="9" y="2" width="18" height="20" viewBox="0 0 512 512">
+        <path fill="#d52b1e" d="M256 32l-25.6 47.9c-2.9 5.2-8.1 4.7-13.3 1.8l-18.5-9.6 13.8 73.2c2.9 13.4-6.4 13.4-11 7.6l-32.3-36.2-5.2 18.4c-.6 2.4-3.3 4.9-7.3 4.3l-40.9-8.6 10.7 39.1c2.3 8.7 4.1 12.3-2.3 14.6l-14.5 6.8 70.2 57c2.8 2.1 4.2 5.9 3.2 9.4l-6.1 20.2c24.2-2.8 45.9-7 70.1-9.6 2.1-.2 5.7 3.3 5.7 5.7l-3.2 74h11.7l-1.9-73.9c0-2.4 3.5-6 5.6-5.8 24.2 2.6 45.9 6.8 70.1 9.6l-6.1-20.2c-1-3.5.4-7.3 3.2-9.4l70.2-57-14.5-6.8c-6.4-2.3-4.6-5.9-2.3-14.6l10.7-39.1-40.9 8.6c-4 .6-6.7-1.9-7.3-4.3l-5.2-18.4-32.3 36.2c-4.6 5.8-13.9 5.8-11-7.6l13.8-73.2-18.5 9.6c-5.2 2.9-10.4 3.4-13.3-1.8z"/>
+      </svg>
+    </svg>
+    <span class="clk-time" id="clkCa">--:--</span>
+  </div>
+</div>
+
 <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
 
 <div class="swiper" id="swiper">
@@ -743,12 +880,199 @@
           <div class="check-item" data-key="permis"><span class="li-ico"><i data-lucide="car-front"></i></span><span class="check-label">Permis de conduire</span><span class="check-box"></span></div>
         </div>
         <div class="group">
+          <div class="group-title">Formalités</div>
+          <div class="check-item" data-key="arrivecan"><span class="li-ico"><i data-lucide="globe"></i></span><span class="check-label">Déclaration ArriveCAN</span><button class="detail-btn" type="button" data-detail="arrivecan"><i data-lucide="info"></i>Détail</button><span class="check-box"></span></div>
+        </div>
+        <div class="group">
           <div class="group-title">Électronique</div>
           <div class="check-item" data-key="batterie"><span class="li-ico"><i data-lucide="battery-charging"></i></span><span class="check-label">Batterie externe</span><span class="check-box"></span></div>
           <div class="check-item" data-key="ecouteurs"><span class="li-ico"><i data-lucide="headphones"></i></span><span class="check-label">Écouteurs filaires</span><span class="check-box"></span></div>
           <div class="check-item" data-key="adaptateur"><span class="li-ico"><i data-lucide="plug-zap"></i></span><span class="check-label">Adaptateur de prises</span><span class="check-box"></span></div>
           <div class="check-item" data-key="airtags"><span class="li-ico"><i data-lucide="map-pin"></i></span><span class="check-label">AirTags</span><span class="check-box"></span></div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="day a-vol" data-day="billets" data-label="Billets">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-meta">
+          <span class="day-num">Aller-retour</span>
+          <span class="badge">Air Transat</span>
+        </div>
+        <div class="date-line">20 → 30 juillet 2026</div>
+      </div>
+      <div class="card-body">
+
+        <div class="pass">
+          <div class="pass-top">
+            <div class="pass-airline">
+              <span class="pass-logo"><i data-lucide="plane"></i></span>
+              <div>
+                <div class="pass-flight">Vol TS 583</div>
+                <div class="pass-op">Air Transat</div>
+              </div>
+            </div>
+            <div class="pass-pax">
+              <div class="pass-lbl">Passager</div>
+              <div class="pass-name">Géraud</div>
+            </div>
+          </div>
+          <div class="pass-route">
+            <div class="pass-city dep">
+              <div class="pass-code">TLS</div>
+              <div class="pass-time">14:30</div>
+              <div class="pass-town">Toulouse</div>
+            </div>
+            <div class="pass-mid">
+              <div class="pass-dur">8h05</div>
+              <div class="pass-track"><span></span><i data-lucide="plane"></i><span></span></div>
+            </div>
+            <div class="pass-city arr">
+              <div class="pass-code">YUL</div>
+              <div class="pass-time">16:35</div>
+              <div class="pass-town">Montréal</div>
+            </div>
+          </div>
+          <div class="pass-stub">
+            <div class="pass-field">
+              <div class="pass-lbl">Confirmation</div>
+              <div class="pass-val code">7Z94MH</div>
+            </div>
+            <div class="pass-field">
+              <div class="pass-lbl">Date</div>
+              <div class="pass-val">20 juil. 2026</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pass">
+          <div class="pass-top">
+            <div class="pass-airline">
+              <span class="pass-logo"><i data-lucide="plane"></i></span>
+              <div>
+                <div class="pass-flight">Vol TS 583</div>
+                <div class="pass-op">Air Transat</div>
+              </div>
+            </div>
+            <div class="pass-pax">
+              <div class="pass-lbl">Passager</div>
+              <div class="pass-name">Jules</div>
+            </div>
+          </div>
+          <div class="pass-route">
+            <div class="pass-city dep">
+              <div class="pass-code">TLS</div>
+              <div class="pass-time">14:30</div>
+              <div class="pass-town">Toulouse</div>
+            </div>
+            <div class="pass-mid">
+              <div class="pass-dur">8h05</div>
+              <div class="pass-track"><span></span><i data-lucide="plane"></i><span></span></div>
+            </div>
+            <div class="pass-city arr">
+              <div class="pass-code">YUL</div>
+              <div class="pass-time">16:35</div>
+              <div class="pass-town">Montréal</div>
+            </div>
+          </div>
+          <div class="pass-stub">
+            <div class="pass-field">
+              <div class="pass-lbl">Confirmation</div>
+              <div class="pass-val code">7Z94MH</div>
+            </div>
+            <div class="pass-field">
+              <div class="pass-lbl">Date</div>
+              <div class="pass-val">20 juil. 2026</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pass">
+          <div class="pass-top">
+            <div class="pass-airline">
+              <span class="pass-logo"><i data-lucide="plane"></i></span>
+              <div>
+                <div class="pass-flight">Vol TS 582</div>
+                <div class="pass-op">Air Transat</div>
+              </div>
+            </div>
+            <div class="pass-pax">
+              <div class="pass-lbl">Passager</div>
+              <div class="pass-name">Géraud</div>
+            </div>
+          </div>
+          <div class="pass-route">
+            <div class="pass-city dep">
+              <div class="pass-code">YUL</div>
+              <div class="pass-time">23:40</div>
+              <div class="pass-town">Montréal</div>
+            </div>
+            <div class="pass-mid">
+              <div class="pass-dur">7h00</div>
+              <div class="pass-track"><span></span><i data-lucide="plane"></i><span></span></div>
+            </div>
+            <div class="pass-city arr">
+              <div class="pass-code">TLS</div>
+              <div class="pass-time">12:40 <span class="pass-next">+1</span></div>
+              <div class="pass-town">Toulouse</div>
+            </div>
+          </div>
+          <div class="pass-stub">
+            <div class="pass-field">
+              <div class="pass-lbl">Confirmation</div>
+              <div class="pass-val code">7Z94MH</div>
+            </div>
+            <div class="pass-field">
+              <div class="pass-lbl">Date</div>
+              <div class="pass-val">29 juil. 2026</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pass">
+          <div class="pass-top">
+            <div class="pass-airline">
+              <span class="pass-logo"><i data-lucide="plane"></i></span>
+              <div>
+                <div class="pass-flight">Vol TS 582</div>
+                <div class="pass-op">Air Transat</div>
+              </div>
+            </div>
+            <div class="pass-pax">
+              <div class="pass-lbl">Passager</div>
+              <div class="pass-name">Jules</div>
+            </div>
+          </div>
+          <div class="pass-route">
+            <div class="pass-city dep">
+              <div class="pass-code">YUL</div>
+              <div class="pass-time">23:40</div>
+              <div class="pass-town">Montréal</div>
+            </div>
+            <div class="pass-mid">
+              <div class="pass-dur">7h00</div>
+              <div class="pass-track"><span></span><i data-lucide="plane"></i><span></span></div>
+            </div>
+            <div class="pass-city arr">
+              <div class="pass-code">TLS</div>
+              <div class="pass-time">12:40 <span class="pass-next">+1</span></div>
+              <div class="pass-town">Toulouse</div>
+            </div>
+          </div>
+          <div class="pass-stub">
+            <div class="pass-field">
+              <div class="pass-lbl">Confirmation</div>
+              <div class="pass-val code">7Z94MH</div>
+            </div>
+            <div class="pass-field">
+              <div class="pass-lbl">Date</div>
+              <div class="pass-val">29 juil. 2026</div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -954,7 +1278,7 @@
   <div class="sheet-grab"></div>
   <div class="sheet-head" id="sheetHead">
     <div>
-      <div class="sheet-kicker">À faire · sans horaire</div>
+      <div class="sheet-kicker" id="sheetKicker">À faire · sans horaire</div>
       <div class="sheet-title" id="sheetTitle">Idées</div>
     </div>
     <button class="sheet-close" id="sheetClose" aria-label="Fermer"><i data-lucide="x"></i></button>
@@ -974,7 +1298,7 @@
         { ico: 'dice-5', name: 'Casino de Montréal', note: '' }
       ]}
     ]},
-    bonecho: { label: 'Idées au Lac Bon Echo', groups: [
+    bonecho: { label: 'A faire - Lac Bon Echo', groups: [
       { title: null, items: [
         { ico: 'mountain', name: 'Rocher Mazinaw', note: 'Falaise' },
         { ico: 'footprints', name: 'Cliff Top Experience', note: 'Randonnée' }
@@ -1055,19 +1379,24 @@
   const sheet = document.getElementById('sheet');
   const sheetBody = document.getElementById('sheetBody');
   const sheetTitle = document.getElementById('sheetTitle');
+  const sheetKicker = document.getElementById('sheetKicker');
   let sheetOpen = false;
 
-  function openSheet(city) {
-    const def = IDEAS[city];
-    if (!def) return;
-    sheet.className = 'sheet ' + (CITY_ACCENT[city] || '');
-    sheetTitle.textContent = def.label;
-    sheetBody.innerHTML = ideasListHtml(def);
+  function openSheetRaw(accentClass, kicker, title, bodyHtml) {
+    sheet.className = 'sheet ' + (accentClass || '');
+    sheetKicker.textContent = kicker;
+    sheetTitle.textContent = title;
+    sheetBody.innerHTML = bodyHtml;
     if (window.lucide) lucide.createIcons();
     sheetBody.scrollTop = 0;
     document.body.classList.add('sheet-open');
     requestAnimationFrame(() => { scrim.classList.add('show'); sheet.classList.add('show'); });
     sheetOpen = true;
+  }
+  function openSheet(city) {
+    const def = IDEAS[city];
+    if (!def) return;
+    openSheetRaw(CITY_ACCENT[city] || '', 'À faire · sans horaire', def.label, ideasListHtml(def));
   }
   function closeSheet() {
     scrim.classList.remove('show');
@@ -1201,6 +1530,19 @@
   updateCountdowns();
   setInterval(updateCountdowns, 10000);
 
+  // Horloges France / Canada (heure réelle de chaque fuseau)
+  const clkFr = document.getElementById('clkFr');
+  const clkCa = document.getElementById('clkCa');
+  const clockFmt = (tz) => new Intl.DateTimeFormat('fr-FR', {
+    timeZone: tz, hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+  }).format(new Date());
+  function updateClocks() {
+    clkFr.textContent = clockFmt('Europe/Paris');
+    clkCa.textContent = clockFmt('America/Toronto');
+  }
+  updateClocks();
+  setInterval(updateClocks, 1000);
+
   // Checklist — mémorisation locale + progression
   const checkItems = document.querySelectorAll('.check-item');
   const packFill = document.getElementById('packFill');
@@ -1220,6 +1562,46 @@
     });
   });
   updatePack();
+
+  // ArriveCAN — le bouton « Détail » ouvre la feuille avec les infos
+  const ARRIVECAN_HTML = `
+    <div class="group">
+      <div class="idea-item">
+        <span class="li-ico"><i data-lucide="timer"></i></span>
+        <div class="idea-text">
+          <div class="idea-name">Au plus tôt 72 h avant l'arrivée</div>
+          <div class="idea-note">Remplir la déclaration préalable de l'ASFC pour passer la frontière plus vite.</div>
+        </div>
+      </div>
+      <div class="idea-item">
+        <span class="li-ico"><i data-lucide="plane-landing"></i></span>
+        <div class="idea-text">
+          <div class="idea-name">Valable à Montréal-Trudeau (YUL)</div>
+          <div class="idea-note">Notre aéroport d'arrivée fait partie des aéroports éligibles.</div>
+        </div>
+      </div>
+      <div class="idea-item">
+        <span class="li-ico"><i data-lucide="smartphone"></i></span>
+        <div class="idea-text">
+          <div class="idea-name">Via l'app ArriveCAN ou en ligne</div>
+          <div class="idea-note">Déclaration douanière et d'immigration à remplir à l'avance.</div>
+        </div>
+      </div>
+      <div class="idea-item">
+        <span class="li-ico"><i data-lucide="users"></i></span>
+        <div class="idea-text">
+          <div class="idea-name">Une déclaration par voyageur</div>
+          <div class="idea-note">Géraud et Jules : chacun la sienne.</div>
+        </div>
+      </div>
+    </div>
+    <a class="sheet-cta" href="https://www.canada.ca/fr/agence-services-frontaliers/services/arrivecan.html" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Compléter en ligne</a>`;
+  document.querySelectorAll('.detail-btn[data-detail="arrivecan"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openSheetRaw('a-canada', "Formalité d'entrée · Canada", 'ArriveCAN', ARRIVECAN_HTML);
+    });
+  });
 
   update();
 </script>
