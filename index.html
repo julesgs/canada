@@ -759,6 +759,7 @@
   .budget-input::-webkit-outer-spin-button,
   .budget-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
   .budget-input:focus { outline: none; border-color: var(--a, var(--ink-2)); }
+  .budget-input::placeholder { color: var(--ink-3); opacity: 0.5; }
 
   .day-budget {
     display: flex;
@@ -1661,15 +1662,14 @@
   // ===== Budget inline — champ discret sous chaque jour + total sur Checklist =====
   // Budget total réparti sur les jours ; chaque jour affiche le budget autorisé
   // (ce qu'il reste ÷ jours restants) recalculé selon le surplus / déficit des autres jours.
-  const BUDGET_DEFAULT = 900;
   const BUDGET_DAYS = [...days]
     .map(d => ({ n: parseInt(d.dataset.day, 10), el: d }))
     .filter(d => d.n >= 1);
   const fmtEur = v => Math.round(v).toLocaleString('fr-FR');
 
   // Champ « total du séjour » discret, tout en bas de la page Checklist
-  let capVal = parseFloat(localStorage.getItem('budget:cap'));
-  if (!isFinite(capVal)) capVal = BUDGET_DEFAULT;
+  let capVal = '';
+  try { capVal = localStorage.getItem('budget:cap') || ''; } catch (e) {}
   const checklistBody = document.querySelector('.day[data-day="checklist"] .card-body');
   if (checklistBody) {
     const capBox = document.createElement('div');
@@ -1677,7 +1677,7 @@
     capBox.innerHTML = `
       <span class="db-label">Budget total du séjour</span>
       <span class="db-input-wrap">
-        <input id="budgetCap" class="budget-input db-input" type="number" inputmode="decimal" min="0" step="10" value="${capVal}">
+        <input id="budgetCap" class="budget-input db-input" type="number" inputmode="decimal" min="0" step="10" placeholder="0" value="${capVal}">
         <span class="db-cur">€</span>
       </span>`;
     checklistBody.appendChild(capBox);
