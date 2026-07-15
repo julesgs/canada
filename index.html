@@ -268,6 +268,8 @@
     padding: 6px 20px 22px;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
+    display: flex;
+    flex-direction: column;
   }
   .card-body::-webkit-scrollbar { width: 0; }
 
@@ -329,22 +331,6 @@
     margin-top: 2px;
     letter-spacing: -0.005em;
   }
-  .nav-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-  .nav-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    text-decoration: none;
-    color: var(--a, var(--ink-2));
-    background: color-mix(in srgb, var(--a, var(--ink-2)) 9%, var(--card));
-    border: 1px solid color-mix(in srgb, var(--a, var(--ink-2)) 20%, transparent);
-    border-radius: 50%;
-    transition: transform 0.15s;
-  }
-  .nav-link:active { transform: scale(0.9); }
-  .nav-link svg.lucide { width: 15px; height: 15px; }
 
   /* ===== BOOKED / RÉSERVÉ ===== */
   .act.booked {
@@ -757,6 +743,43 @@
   .sheet-cta:active { transform: scale(0.98); }
   .sheet-cta svg.lucide { width: 16px; height: 16px; }
 
+  /* ===== BUDGET (champ discret sous chaque jour + total sur Checklist) ===== */
+  .budget-input {
+    text-align: right;
+    font-family: inherit;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    font-variant-numeric: tabular-nums;
+    -moz-appearance: textfield;
+    transition: border-color 0.15s;
+  }
+  .budget-input::-webkit-outer-spin-button,
+  .budget-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .budget-input:focus { outline: none; border-color: var(--a, var(--ink-2)); }
+
+  .day-budget {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--line-soft);
+    flex-shrink: 0;
+  }
+  .db-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-3); }
+  .db-input-wrap { display: flex; align-items: center; gap: 4px; }
+  .day-budget.cap .db-input-wrap { margin-left: auto; }
+  .db-input { width: 66px; padding: 6px 8px; font-size: 13px; }
+  .db-cur { font-size: 11px; font-weight: 700; color: var(--ink-3); }
+  .db-allowed { font-size: 11.5px; font-weight: 600; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .db-delta { margin-left: auto; font-size: 12.5px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+  .db-delta.pos { color: var(--resa); }
+  .db-delta.neg { color: var(--d-flight); }
+  .db-delta.empty { color: transparent; }
+
   /* ===== PAGER DOCK ===== */
   .pager {
     flex-shrink: 0;
@@ -1053,9 +1076,9 @@
         <div class="title">Route vers Bon Echo</div>
       </div>
       <div class="card-body">
-        <div class="act"><span class="time">09h00</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-out Ruby Foo's</div></div></div>
-        <div class="act"><span class="time">09h30</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Montréal → Parc Bon Echo</div><div class="note">~2h30 de route</div><div class="nav-links"><a class="nav-link" href="https://waze.com/ul?q=Bon%20Echo%20Provincial%20Park&navigate=yes" target="_blank" rel="noopener" aria-label="Itinéraire Waze"><i data-lucide="navigation"></i></a></div></div></div>
-        <div class="act"><span class="time">12h30</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-in Lakeside Inn</div><div class="note">22 → 23 juillet · 1 nuit</div></div></div>
+        <div class="act"><span class="time">08h30</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-out Ruby Foo's</div></div></div>
+        <div class="act"><span class="time">09h00</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Montréal → Parc Bon Echo</div><div class="note">~4h de route</div></div></div>
+        <div class="act"><span class="time">13h30</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-in Lakeside Inn</div><div class="note">22 → 23 juillet · 1 nuit</div></div></div>
       </div>
     </div>
   </section>
@@ -1072,7 +1095,7 @@
       </div>
       <div class="card-body">
         <div class="act"><span class="time">09h00</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-out Lakeside Inn</div></div></div>
-        <div class="act"><span class="time">09h30</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Bon Echo → Toronto</div><div class="note">~3h30 de route</div><div class="nav-links"><a class="nav-link" href="https://waze.com/ul?q=Town%20Inn%20Suites%20Toronto&navigate=yes" target="_blank" rel="noopener" aria-label="Itinéraire Waze"><i data-lucide="navigation"></i></a></div></div></div>
+        <div class="act"><span class="time">09h30</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Bon Echo → Toronto</div><div class="note">~3h30 de route</div></div></div>
         <div class="act"><span class="time">13h30</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-in Town Inn Suites</div><div class="note">23 → 28 juillet · 5 nuits</div></div></div>
       </div>
     </div>
@@ -1145,9 +1168,9 @@
         <div class="title">Chutes du Niagara</div>
       </div>
       <div class="card-body">
-        <div class="act"><span class="time">08h30</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Toronto → Niagara Falls</div><div class="note">~1h30 de route</div><div class="nav-links"><a class="nav-link" href="https://waze.com/ul?q=Niagara%20City%20Cruises&navigate=yes" target="_blank" rel="noopener" aria-label="Itinéraire Waze"><i data-lucide="navigation"></i></a></div></div></div>
+        <div class="act"><span class="time">08h30</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Toronto → Niagara Falls</div><div class="note">~1h30 de route</div></div></div>
         <div class="act booked" data-when="2026-07-27T13:00:00-04:00"><span class="time">13h00</span><span class="thumb placeholder d-boat"><i data-lucide="ship"></i></span><div class="act-text"><div class="name">Croisière au pied des chutes <span class="resa"><i data-lucide="check"></i> Réservé</span></div><div class="note">Niagara City Cruises</div><div class="countdown"><i data-lucide="clock"></i><span class="cd-txt"></span></div></div></div>
-        <div class="act"><span class="time">18h00</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Niagara → Toronto</div><div class="note">~1h30 de route</div><div class="nav-links"><a class="nav-link" href="https://waze.com/ul?q=Town%20Inn%20Suites%20Toronto&navigate=yes" target="_blank" rel="noopener" aria-label="Itinéraire Waze"><i data-lucide="navigation"></i></a></div></div></div>
+        <div class="act"><span class="time">18h00</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Niagara → Toronto</div><div class="note">~1h30 de route</div></div></div>
       </div>
     </div>
   </section>
@@ -1163,9 +1186,9 @@
         <div class="title">Route vers Québec</div>
       </div>
       <div class="card-body">
-        <div class="act"><span class="time">10h00</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-out Town Inn Suites</div></div></div>
-        <div class="act"><span class="time">10h30</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Toronto → Québec City</div><div class="note">~7h30 de route — prévoir des pauses</div><div class="nav-links"><a class="nav-link" href="https://waze.com/ul?q=Quebec%20City&navigate=yes" target="_blank" rel="noopener" aria-label="Itinéraire Waze"><i data-lucide="navigation"></i></a></div></div></div>
-        <div class="act"><span class="time">19h00</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-in hôtel Québec</div><div class="note">28 → 29 juillet · 1 nuit</div></div></div>
+        <div class="act"><span class="time">08h30</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-out Town Inn Suites</div></div></div>
+        <div class="act"><span class="time">09h00</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Toronto → Québec City</div><div class="note">~8h30 de route — prévoir des pauses</div></div></div>
+        <div class="act"><span class="time">20h30</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-in hôtel Québec</div><div class="note">28 → 29 juillet · 1 nuit</div></div></div>
       </div>
     </div>
   </section>
@@ -1182,7 +1205,7 @@
       </div>
       <div class="card-body">
         <div class="act"><span class="time">12h30</span><span class="thumb placeholder d-hotel"><i data-lucide="bed"></i></span><div class="act-text"><div class="name">Check-out hôtel Québec</div></div></div>
-        <div class="act"><span class="time">13h00</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Québec → Montréal (YUL)</div><div class="note">~2h30 de route — retour voiture de location</div><div class="nav-links"><a class="nav-link" href="https://waze.com/ul?q=Montreal%20Trudeau%20Airport&navigate=yes" target="_blank" rel="noopener" aria-label="Itinéraire Waze"><i data-lucide="navigation"></i></a></div></div></div>
+        <div class="act"><span class="time">13h00</span><span class="thumb placeholder d-drive"><i data-lucide="car"></i></span><div class="act-text"><div class="name">Trajet Québec → Montréal (YUL)</div><div class="note">~2h30 de route — retour voiture de location</div></div></div>
         <div class="act"><span class="time">17h00</span><span class="thumb d-flight"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/YUL.U.S._Departures.Sector.Control.Tower.jpg/330px-YUL.U.S._Departures.Sector.Control.Tower.jpg" alt="" loading="lazy"></span><div class="act-text"><div class="name">Arrivée aéroport YUL</div><div class="note">Enregistrement</div></div></div>
         <div class="act"><span class="time">23h40</span><span class="thumb placeholder d-flight"><i data-lucide="plane"></i></span><div class="act-text"><div class="name">Décollage</div></div></div>
       </div>
@@ -1634,6 +1657,92 @@
       openSheetRaw('a-canada', "Formalité d'entrée · Canada", 'ArriveCAN', ARRIVECAN_HTML);
     });
   });
+
+  // ===== Budget inline — champ discret sous chaque jour + total sur Checklist =====
+  // Budget total réparti sur les jours ; chaque jour affiche le budget autorisé
+  // (ce qu'il reste ÷ jours restants) recalculé selon le surplus / déficit des autres jours.
+  const BUDGET_DEFAULT = 900;
+  const BUDGET_DAYS = [...days]
+    .map(d => ({ n: parseInt(d.dataset.day, 10), el: d }))
+    .filter(d => d.n >= 1);
+  const fmtEur = v => Math.round(v).toLocaleString('fr-FR');
+
+  // Champ « total du séjour » discret, tout en bas de la page Checklist
+  let capVal = parseFloat(localStorage.getItem('budget:cap'));
+  if (!isFinite(capVal)) capVal = BUDGET_DEFAULT;
+  const checklistBody = document.querySelector('.day[data-day="checklist"] .card-body');
+  if (checklistBody) {
+    const capBox = document.createElement('div');
+    capBox.className = 'day-budget cap';
+    capBox.innerHTML = `
+      <span class="db-label">Budget total du séjour</span>
+      <span class="db-input-wrap">
+        <input id="budgetCap" class="budget-input db-input" type="number" inputmode="decimal" min="0" step="10" value="${capVal}">
+        <span class="db-cur">€</span>
+      </span>`;
+    checklistBody.appendChild(capBox);
+  }
+
+  // Champ « dépensé » discret sous chaque jour + budget autorisé calculé
+  BUDGET_DAYS.forEach(d => {
+    const body = d.el.querySelector('.card-body');
+    if (!body) return;
+    let sp = '';
+    try { sp = localStorage.getItem('budget:day:' + d.n) || ''; } catch (e) {}
+    const box = document.createElement('div');
+    box.className = 'day-budget';
+    box.innerHTML = `
+      <span class="db-label">Dépensé</span>
+      <span class="db-input-wrap">
+        <input class="budget-input db-input" type="number" inputmode="decimal" min="0" step="5" placeholder="0" data-day="${d.n}" value="${sp}">
+        <span class="db-cur">€</span>
+      </span>
+      <span class="db-allowed" data-allowed="${d.n}"></span>
+      <span class="db-delta empty" data-delta="${d.n}"></span>`;
+    body.appendChild(box);
+  });
+
+  const capInput = document.getElementById('budgetCap');
+  function recomputeBudget() {
+    const cap = parseFloat(capInput && capInput.value) || 0;
+    const n = BUDGET_DAYS.length;
+    let pot = cap;
+    BUDGET_DAYS.forEach((d, i) => {
+      const daysLeft = n - i;
+      const allowed = daysLeft > 0 ? pot / daysLeft : 0;
+      const inp = document.querySelector('.db-input[data-day="' + d.n + '"]');
+      const allowedEl = document.querySelector('[data-allowed="' + d.n + '"]');
+      const deltaEl = document.querySelector('[data-delta="' + d.n + '"]');
+      if (allowedEl) allowedEl.textContent = '· Restant ' + fmtEur(allowed) + ' €';
+      const raw = ((inp && inp.value) || '').trim();
+      if (raw === '') {
+        if (deltaEl) { deltaEl.textContent = ''; deltaEl.className = 'db-delta empty'; }
+        pot -= allowed;                       // jour à venir : on réserve son enveloppe
+      } else {
+        const spent = parseFloat(raw) || 0;
+        const delta = allowed - spent;
+        if (deltaEl) {
+          deltaEl.textContent = (delta >= 0 ? '+' : '−') + fmtEur(Math.abs(delta)) + ' €';
+          deltaEl.className = 'db-delta ' + (delta >= 0 ? 'pos' : 'neg');
+        }
+        pot -= spent;
+      }
+    });
+  }
+
+  if (capInput) {
+    capInput.addEventListener('input', () => {
+      try { localStorage.setItem('budget:cap', capInput.value); } catch (e) {}
+      recomputeBudget();
+    });
+  }
+  document.querySelectorAll('.db-input[data-day]').forEach(inp => {
+    inp.addEventListener('input', () => {
+      try { localStorage.setItem('budget:day:' + inp.dataset.day, inp.value); } catch (e) {}
+      recomputeBudget();
+    });
+  });
+  recomputeBudget();
 
   // Ouvrir directement sur la carte du jour en cours pendant le séjour
   // (J1 = 20 juillet 2026 ; les cartes-jours portent data-day = "1".."10")
